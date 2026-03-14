@@ -182,7 +182,7 @@ const Home: React.FC = () => {
               <div className="hero-badge">
                 <span style={{ fontSize: '1.2rem' }}>✨</span> Destaque da Semana
               </div>
-              <h1>O que vamos pedir hoje?</h1>
+              <h1>Qual o pedido de hoje?</h1>
               <p>Sua fome atendida da melhor forma, sabor inesquecível e entrega rápida!</p>
               <div 
                 className="scroll-indicator"
