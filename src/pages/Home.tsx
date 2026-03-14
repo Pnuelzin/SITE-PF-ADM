@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Product, Category } from '../types';
 import { useCart } from '../context/CartContext';
-import { ShoppingCart, Search } from 'lucide-react';
+import { ShoppingCart, Search, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CartSidebar from '../components/CartSidebar';
 
@@ -12,6 +12,7 @@ const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const { addToCart, cart, isCartOpen, setIsCartOpen } = useCart();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const Home: React.FC = () => {
     revealElements.forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
-  }, [loading]); // Re-executa após carregar os produtos
+  }, [loading]);
 
   const fetchData = async () => {
     try {
@@ -62,6 +63,85 @@ const Home: React.FC = () => {
   return (
     <div className={`app-layout ${isCartOpen ? 'cart-open' : ''}`}>
       <CartSidebar />
+      
+      {/* Detalhes do Produto Modal */}
+      {selectedProduct && (
+        <div 
+          onClick={() => setSelectedProduct(null)}
+          style={{ 
+            position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', 
+            backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 3000, 
+            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
+            backdropFilter: 'blur(10px)', animation: 'fadeIn 0.3s ease'
+          }}
+        >
+          <div 
+            onClick={e => e.stopPropagation()}
+            className="card"
+            style={{ 
+              width: '100%', maxWidth: '700px', backgroundColor: 'var(--white)', 
+              borderRadius: '28px', overflow: 'hidden', boxShadow: '0 30px 60px -12px rgba(0,0,0,0.6)',
+              transform: 'scale(1)', animation: 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              position: 'relative'
+            }}
+          >
+            <button 
+              onClick={() => setSelectedProduct(null)}
+              style={{ 
+                position: 'absolute', top: '20px', right: '20px', zIndex: 10,
+                width: '44px', height: '44px', borderRadius: '50%', border: 'none',
+                backgroundColor: 'rgba(255,255,255,0.9)', color: 'black', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.2)', transition: 'transform 0.2s'
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              <X size={24} />
+            </button>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', md: '1fr 1.2fr' }}>
+              <div style={{ height: '400px', overflow: 'hidden' }}>
+                <img 
+                  src={selectedProduct.image_url || '/placeholder.png'} 
+                  alt={selectedProduct.name} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+              <div style={{ padding: '40px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <h2 style={{ fontSize: '2.25rem', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1.1' }}>
+                    {selectedProduct.name}
+                  </h2>
+                </div>
+                <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem', lineHeight: '1.7', marginBottom: '40px' }}>
+                  {selectedProduct.description}
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '30px' }}>
+                  <div>
+                    <span style={{ display: 'block', fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '600', marginBottom: '4px' }}>PREÇO</span>
+                    <span style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--primary)' }}>
+                      R$ {selectedProduct.price.toFixed(2)}
+                    </span>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      addToCart(selectedProduct);
+                      setIsCartOpen(true);
+                      setSelectedProduct(null);
+                    }}
+                    className="btn-primary" 
+                    style={{ padding: '18px 40px', borderRadius: '18px', fontSize: '1.125rem', fontWeight: '700', boxShadow: '0 10px 20px -5px rgba(37,99,235,0.4)' }}
+                  >
+                    Adicionar ao Carrinho
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="navbar hero-active">
         <div className="container navbar-content">
           <Link to="/" className="logo">
@@ -97,11 +177,7 @@ const Home: React.FC = () => {
                     if (el) {
                       const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
                       const offsetPosition = elementPosition - 80;
-
-                      window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                      });
+                      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                     }
                   }}
                   className="btn-primary" 
@@ -155,8 +231,13 @@ const Home: React.FC = () => {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
           {filteredProducts.map((product) => (
-            <div key={product.id} className="card reveal" style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ height: '200px', backgroundColor: '#f1f5f9', borderRadius: '8px', marginBottom: '16px', overflow: 'hidden' }}>
+            <div 
+              key={product.id} 
+              className="card reveal" 
+              style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer', transition: 'transform 0.3s ease' }} 
+              onClick={() => setSelectedProduct(product)}
+            >
+              <div style={{ height: '220px', backgroundColor: '#f1f5f9', borderRadius: '16px', marginBottom: '16px', overflow: 'hidden' }}>
                 {product.image_url ? (
                   <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
@@ -165,10 +246,12 @@ const Home: React.FC = () => {
                   </div>
                 )}
               </div>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>{product.name}</h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '16px', flex: 1 }}>{product.description}</p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--primary)' }}>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: '700' }}>{product.name}</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '20px', flex: 1, display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                {product.description}
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={e => e.stopPropagation()}>
+                <span style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--primary)' }}>
                   R$ {product.price.toFixed(2)}
                 </span>
                 <button 
@@ -177,7 +260,7 @@ const Home: React.FC = () => {
                     setIsCartOpen(true);
                   }}
                   className="btn-primary" 
-                  style={{ padding: '8px 20px', borderRadius: '12px' }}
+                  style={{ padding: '10px 24px', borderRadius: '14px', fontWeight: '700' }}
                 >
                   Comprar
                 </button>
