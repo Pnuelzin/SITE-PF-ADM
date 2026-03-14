@@ -264,7 +264,7 @@ const Home: React.FC = () => {
         <div className="hero-wave"></div>
       </section>
 
-      <main id="products-grid" className="main-content container animate-fade" style={{ padding: '80px 20px 40px' }}>
+      <main id="products-grid" className="main-content container animate-fade responsive-main" style={{ padding: '60px 0 40px' }}>
         <div className="reveal" style={{ display: 'flex', gap: '20px', marginBottom: '40px' }}>
           <div className="search-bar" style={{ flex: 1, position: 'relative' }}>
             <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={20} />
@@ -298,15 +298,15 @@ const Home: React.FC = () => {
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+        <div className="product-grid">
           {filteredProducts.map((product) => (
             <div 
               key={product.id} 
-              className="card reveal" 
+              className="card card-product reveal" 
               style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
               onClick={() => setSelectedProduct(product)}
             >
-              <div style={{ height: '220px', backgroundColor: 'var(--bg-main)', borderRadius: '16px', marginBottom: '16px', overflow: 'hidden' }}>
+              <div className="product-image-container" style={{ height: '220px', backgroundColor: 'var(--bg-main)', borderRadius: '16px', marginBottom: '16px', overflow: 'hidden' }}>
                 {product.image_url ? (
                   <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
@@ -319,8 +319,8 @@ const Home: React.FC = () => {
               <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '20px', flex: 1, display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                 {product.description}
               </p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={e => e.stopPropagation()}>
-                <span style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--primary)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }} onClick={e => e.stopPropagation()}>
+                <span className="price-tag" style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--primary)' }}>
                   R$ {product.price.toFixed(2)}
                 </span>
                 <button 
@@ -328,7 +328,7 @@ const Home: React.FC = () => {
                     addToCart(product);
                     setIsCartOpen(true);
                   }}
-                  className="btn-primary" 
+                  className="btn-primary btn-buy" 
                   style={{ padding: '10px 24px', borderRadius: '14px', fontWeight: '700' }}
                 >
                   Comprar

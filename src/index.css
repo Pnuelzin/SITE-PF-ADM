@@ -443,6 +443,44 @@ button {
     padding-top: 20px;
     margin-top: 10px;
   }
+
+  /* Grid de produtos mobile - 2 colunas */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .card-product {
+    padding: 12px !important;
+  }
+
+  .card-product h3 {
+    font-size: 1rem !important;
+  }
+
+  .card-product p {
+    display: none !important; /* Esconde descrição no mobile para economizar espaço */
+  }
+
+  .card-product .product-image-container {
+    height: 140px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .card-product .price-tag {
+    font-size: 1rem !important;
+  }
+
+  .card-product .btn-buy {
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 .show-mobile {
