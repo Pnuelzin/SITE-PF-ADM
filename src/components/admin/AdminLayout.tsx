@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Package, MapPin, Settings, LogOut, Coffee } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, MapPin, Settings, LogOut, Coffee, Moon, Sun } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
 
 import { useAuth } from '../../context/AuthContext';
 
@@ -9,6 +10,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const menuItems = [
     { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
@@ -29,12 +31,21 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f1f5f9' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-main)' }}>
       {/* Sidebar */}
       <aside style={{ width: '280px', background: 'var(--white)', borderRight: '1px solid var(--border)', padding: '24px', display: 'flex', flexDirection: 'column' }}>
-        <Link to="/" className="logo" style={{ marginBottom: '40px' }}>
-          <Coffee size={24} /> <span>Admin Painel</span>
-        </Link>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+          <Link to="/" className="logo">
+            <Coffee size={24} /> <span>Admin</span>
+          </Link>
+          <button 
+            onClick={toggleTheme} 
+            className="theme-toggle"
+            style={{ width: '36px', height: '36px' }}
+          >
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+        </div>
 
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
           {menuItems.map((item) => (

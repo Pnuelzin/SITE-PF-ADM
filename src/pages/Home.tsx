@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Product, Category } from '../types';
 import { useCart } from '../context/CartContext';
-import { ShoppingCart, Search, X, ChevronDown } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { ShoppingCart, Search, X, ChevronDown, Moon, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CartSidebar from '../components/CartSidebar';
 
@@ -15,6 +16,7 @@ const Home: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [settings, setSettings] = useState<any>(null);
+  const { theme, toggleTheme } = useTheme();
   const { addToCart, cart, isCartOpen, setIsCartOpen } = useCart();
 
   const fetchData = async () => {
@@ -165,6 +167,14 @@ const Home: React.FC = () => {
             <img src="/image/Vector.svg" alt="Logo" style={{ height: '40px', width: 'auto' }} />
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <button 
+              onClick={toggleTheme} 
+              className="theme-toggle"
+              title={theme === 'light' ? 'Ativar Modo Escuro' : 'Ativar Modo Claro'}
+              style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', cursor: 'pointer', borderRadius: '12px', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            </button>
             <button 
               onClick={() => setIsCartOpen(true)}
               className="btn-outline" 

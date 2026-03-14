@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProducts from './pages/AdminProducts';
@@ -21,25 +22,27 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <CartProvider>
-        <Router>
-          <Routes>
-            {/* Client Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/checkout" element={<Checkout />} />
+      <ThemeProvider>
+        <CartProvider>
+          <Router>
+            <Routes>
+              {/* Client Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/checkout" element={<Checkout />} />
 
-            {/* Admin Authentication */}
-            <Route path="/admin/login" element={<Login />} />
+              {/* Admin Authentication */}
+              <Route path="/admin/login" element={<Login />} />
 
-            {/* Protected Admin Routes */}
-            <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/admin/products" element={<ProtectedRoute><AdminProducts /></ProtectedRoute>} />
-            <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
-            <Route path="/admin/locations" element={<ProtectedRoute><AdminLocations /></ProtectedRoute>} />
-            <Route path="/admin/settings" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
-          </Routes>
-        </Router>
-      </CartProvider>
+              {/* Protected Admin Routes */}
+              <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/products" element={<ProtectedRoute><AdminProducts /></ProtectedRoute>} />
+              <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
+              <Route path="/admin/locations" element={<ProtectedRoute><AdminLocations /></ProtectedRoute>} />
+              <Route path="/admin/settings" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
+            </Routes>
+          </Router>
+        </CartProvider>
+      </ThemeProvider>
     </AuthProvider>
   );
 };
