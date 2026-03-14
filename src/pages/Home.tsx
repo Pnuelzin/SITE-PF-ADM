@@ -100,7 +100,7 @@ const Home: React.FC = () => {
             onClick={e => e.stopPropagation()}
             className="card"
             style={{ 
-              width: '90%', maxWidth: '450px', backgroundColor: 'var(--white)', 
+              width: '90%', maxWidth: '450px', backgroundColor: 'var(--bg-card)', 
               borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px -12px rgba(0,0,0,0.6)',
               transform: 'scale(1)', animation: 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
               position: 'relative'
@@ -111,7 +111,7 @@ const Home: React.FC = () => {
               style={{ 
                 position: 'absolute', top: '15px', right: '15px', zIndex: 10,
                 width: '36px', height: '36px', borderRadius: '50%', border: 'none',
-                backgroundColor: 'rgba(255,255,255,0.9)', color: 'black', cursor: 'pointer',
+                backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.2)', transition: 'transform 0.2s'
               }}
@@ -233,7 +233,7 @@ const Home: React.FC = () => {
               placeholder="Pesquisar por nome ou descrição..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ width: '100%', padding: '12px 12px 12px 45px', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--white)', boxShadow: 'var(--shadow)' }}
+              style={{ width: '100%', padding: '12px 12px 12px 45px', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-card)', color: 'var(--text-main)', boxShadow: 'var(--shadow)' }}
             />
           </div>
         </div>
@@ -263,10 +263,10 @@ const Home: React.FC = () => {
             <div 
               key={product.id} 
               className="card reveal" 
-              style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }} 
+              style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
               onClick={() => setSelectedProduct(product)}
             >
-              <div style={{ height: '220px', backgroundColor: '#f1f5f9', borderRadius: '16px', marginBottom: '16px', overflow: 'hidden' }}>
+              <div style={{ height: '220px', backgroundColor: 'var(--bg-main)', borderRadius: '16px', marginBottom: '16px', overflow: 'hidden' }}>
                 {product.image_url ? (
                   <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
@@ -275,7 +275,7 @@ const Home: React.FC = () => {
                   </div>
                 )}
               </div>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: '700' }}>{product.name}</h3>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: '700', color: 'var(--text-main)' }}>{product.name}</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '20px', flex: 1, display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                 {product.description}
               </p>

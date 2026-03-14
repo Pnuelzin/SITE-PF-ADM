@@ -47,7 +47,7 @@ const CartSidebar: React.FC = () => {
           width: '100%', 
           maxWidth: '450px', 
           height: '100%', 
-          backgroundColor: 'var(--white)', 
+          backgroundColor: 'var(--bg-card)', 
           zIndex: 1200, 
           boxShadow: '-4px 0 20px rgba(0,0,0,0.1)',
           display: 'flex',
@@ -56,12 +56,12 @@ const CartSidebar: React.FC = () => {
         }}
       >
         <div style={{ padding: '24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
             <ShoppingBag size={24} color="var(--primary)" /> Seu Carrinho
           </h2>
           <button 
             onClick={() => setIsCartOpen(false)}
-            style={{ padding: '8px', borderRadius: '50%', backgroundColor: '#f1f5f9', color: 'var(--text-muted)' }}
+            style={{ padding: '8px', borderRadius: '50%', backgroundColor: 'var(--bg-main)', color: 'var(--text-muted)' }}
           >
             <X size={20} />
           </button>
@@ -83,8 +83,8 @@ const CartSidebar: React.FC = () => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {cart.map((item) => (
-                <div key={item.id} style={{ display: 'flex', gap: '12px', padding: '12px', borderRadius: '12px', border: '1px solid var(--border)' }}>
-                  <div style={{ width: '70px', height: '70px', borderRadius: '8px', backgroundColor: '#f1f5f9', overflow: 'hidden' }}>
+                <div key={item.id} style={{ display: 'flex', gap: '12px', padding: '12px', borderRadius: '12px', border: '1px solid var(--border)', backgroundColor: 'var(--bg-main)' }}>
+                  <div style={{ width: '70px', height: '70px', borderRadius: '8px', backgroundColor: 'var(--bg-card)', overflow: 'hidden' }}>
                     {item.image_url ? (
                       <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
@@ -95,7 +95,7 @@ const CartSidebar: React.FC = () => {
                     <div style={{ fontWeight: '600', fontSize: '1rem', marginBottom: '4px' }}>{item.name}</div>
                     <div style={{ color: 'var(--primary)', fontWeight: '700', marginBottom: '8px' }}>R$ {(item.price * item.quantity).toFixed(2)}</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#f1f5f9', borderRadius: '20px', padding: '4px 8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--bg-main)', borderRadius: '20px', padding: '4px 8px' }}>
                         <button 
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           style={{ padding: '4px', display: 'flex' }}
@@ -125,9 +125,9 @@ const CartSidebar: React.FC = () => {
         </div>
 
         {cart.length > 0 && (
-          <div style={{ padding: '24px', borderTop: '1px solid var(--border)', backgroundColor: '#f8fafc' }}>
+          <div style={{ padding: '24px', borderTop: '1px solid var(--border)', backgroundColor: 'var(--bg-main)' }}>
             {settings && settings.min_order_value > total && (
-              <div style={{ backgroundColor: '#fff7ed', border: '1px solid #ffedd5', color: '#c2410c', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.875rem', display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <div style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid var(--warning)', color: 'var(--warning)', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.875rem', display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <AlertTriangle size={18} />
                 <span>Valor mínimo: R$ {settings.min_order_value.toFixed(2)}</span>
               </div>
@@ -138,7 +138,7 @@ const CartSidebar: React.FC = () => {
               </div>
             )}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <span style={{ fontSize: '1.1rem', fontWeight: '600' }}>Subtotal</span>
+              <span style={{ fontSize: '1.125rem', color: 'var(--text-main)', fontWeight: '500' }}>Subtotal</span>
               <span style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--primary)' }}>R$ {total.toFixed(2)}</span>
             </div>
             <button 
