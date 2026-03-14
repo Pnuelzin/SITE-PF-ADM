@@ -332,7 +332,9 @@ button {
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
+  background: 
+    linear-gradient(135deg, rgba(30, 58, 138, 0.82) 0%, rgba(37, 99, 235, 0.78) 100%),
+    url('/image/29897002257e1f7d83a052889aa2631f.jpg') center/cover no-repeat !important;
   color: var(--white);
   width: 100% !important;
   min-height: 500px;
@@ -347,16 +349,7 @@ button {
   padding-bottom: 32px;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: inherit;
-  z-index: -1;
-}
+
 
 /* Hero Wave removed per user request */
 
