@@ -451,67 +451,71 @@ button {
   /* Grid de produtos mobile - 2 colunas */
   .product-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
+    gap: 10px !important;
+    padding: 0 4px !important;
   }
 
   .card-product {
-    padding: 15px !important;
+    padding: 10px !important;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100% !important;
-    border-radius: 20px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+    background: var(--bg-card);
   }
 
   .card-product h3 {
-    font-size: 1.05rem !important;
-    margin-bottom: 6px !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 4px !important;
+    line-height: 1.2 !important;
+    min-height: auto !important;
+    height: 2.4rem; /* Força 2 linhas para alinhar */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 2.6rem;
   }
 
   .card-product p {
+    font-size: 0.75rem !important;
+    margin-bottom: 10px !important;
+    line-height: 1.3 !important;
+    height: 2rem; /* Alinhamento uniforme */
     display: -webkit-box !important;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    font-size: 0.8rem !important;
-    margin-bottom: 16px !important;
-    line-height: 1.4 !important;
-    color: var(--text-muted);
-    flex-grow: 1;
   }
 
   .card-product .product-image-container {
-    height: 160px !important; /* Aumentado para melhor proporção */
-    margin-bottom: 12px !important;
-    border-radius: 14px !important;
+    height: 110px !important; /* Proporção ideal para 2 colunas */
+    margin-bottom: 10px !important;
+    border-radius: 12px !important;
   }
 
   .card-product .price-tag {
-    font-size: 1.1rem !important;
-    margin-bottom: 0 !important;
+    font-size: 1.05rem !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+    font-weight: 800 !important;
   }
 
   .card-product .btn-buy {
-    width: auto !important;
-    padding: 8px 16px !important;
+    width: 100% !important; /* Botão full width evita cortes */
+    padding: 10px 5px !important;
     font-size: 0.85rem !important;
     border-radius: 10px !important;
+    text-align: center;
   }
 
-  /* Faz o container de preço e botão voltar a ser flex para parecer com desktop */
   .card-product .price-button-container {
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 5px !important;
-    margin-top: 10px;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    margin-top: auto;
   }
 }
 
