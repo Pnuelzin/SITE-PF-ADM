@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Package, MapPin, Settings, LogOut, Coffee, Moon, Sun } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, MapPin, Settings, LogOut, Coffee, Moon, Sun, Menu, X as CloseIcon } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 import { useAuth } from '../../context/AuthContext';
@@ -11,6 +11,16 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const closeMenu = () => setIsMobileMenuOpen(false);
 
   const menuItems = [
     { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
@@ -31,28 +41,47 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-main)' }}>
-      {/* Sidebar */}
-      <aside style={{ 
-        width: '280px', 
-        background: 'var(--bg-card)', 
-        borderRight: '1px solid var(--border)', 
-        padding: '24px', 
-        display: 'flex', 
-        flexDirection: 'column',
-        boxShadow: 'var(--shadow)'
-      }}>
+    <div className="admin-layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-main)' }}>
+      {/* Sidebar Desktop & Mobile */}
+      <aside 
+        className="admin-sidebar"
+        style={{ 
+          width: isMobile ? '100%' : '280px', 
+          background: 'var(--bg-card)', 
+          borderRight: '1px solid var(--border)', 
+          padding: '24px', 
+          display: isMobile && !isMobileMenuOpen ? 'none' : 'flex', 
+          flexDirection: 'column',
+          boxShadow: 'var(--shadow)',
+          position: isMobile ? 'fixed' : 'relative',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          zIndex: 3000,
+          height: isMobile ? '100vh' : 'auto'
+        }}
+      >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-          <Link to="/" className="logo">
+          <Link to="/" className="logo" onClick={closeMenu}>
             <Coffee size={24} /> <span>Admin</span>
           </Link>
-          <button 
-            onClick={toggleTheme} 
-            className="theme-toggle"
-            style={{ width: '36px', height: '36px' }}
-          >
-            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button 
+              onClick={toggleTheme} 
+              className="theme-toggle"
+              style={{ width: '36px', height: '36px' }}
+            >
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+            {isMobile && (
+              <button 
+                onClick={closeMenu}
+                style={{ background: 'transparent', color: 'var(--text-main)' }}
+              >
+                <CloseIcon size={24} />
+              </button>
+            )}
+          </div>
         </div>
 
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
@@ -60,6 +89,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Link
               key={item.path}
               to={item.path}
+              onClick={closeMenu}
               className={location.pathname === item.path ? 'btn-primary' : 'btn-outline'}
               style={{ 
                 display: 'flex', 
@@ -86,9 +116,39 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </button>
       </aside>
 
+      {/* Mobile Header */}
+      {isMobile && (
+        <header 
+          style={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            width: '100%', 
+            height: '60px', 
+            background: 'var(--bg-card)', 
+            borderBottom: '1px solid var(--border)', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            padding: '0 20px',
+            zIndex: 2500
+          }}
+        >
+          <div className="logo" style={{ fontSize: '1.2rem' }}>
+            <Coffee size={20} /> <span>Admin</span>
+          </div>
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            style={{ background: 'transparent', color: 'var(--text-main)', padding: '5px' }}
+          >
+            <Menu size={28} />
+          </button>
+        </header>
+      )}
+
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
-        <div className="container" style={{ maxWidth: '1000px', margin: '0' }}>
+      <main className="admin-main" style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
+        <div className="container" style={{ maxWidth: '1000px', margin: isMobile ? '0' : '0' }}>
           {children}
         </div>
       </main>

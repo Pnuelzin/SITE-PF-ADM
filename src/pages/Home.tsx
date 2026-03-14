@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase';
 import type { Product, Category } from '../types';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
-import { ShoppingCart, Search, X, ChevronDown, Moon, Sun } from 'lucide-react';
+import { ShoppingCart, Search, X, ChevronDown, Moon, Sun, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CartSidebar from '../components/CartSidebar';
 
@@ -18,6 +18,7 @@ const Home: React.FC = () => {
   const [settings, setSettings] = useState<any>(null);
   const { theme, toggleTheme } = useTheme();
   const { addToCart, cart, isCartOpen, setIsCartOpen } = useCart();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -167,14 +168,18 @@ const Home: React.FC = () => {
             <img src="/image/Vector.svg" alt="Logo" style={{ height: '40px', width: 'auto' }} />
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <button 
-              onClick={toggleTheme} 
-              className="theme-toggle"
-              title={theme === 'light' ? 'Ativar Modo Escuro' : 'Ativar Modo Claro'}
-              style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', cursor: 'pointer', borderRadius: '12px', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-            </button>
+            <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <button 
+                onClick={toggleTheme} 
+                className="theme-toggle"
+                title={theme === 'light' ? 'Ativar Modo Escuro' : 'Ativar Modo Claro'}
+                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', cursor: 'pointer', borderRadius: '12px', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              </button>
+              <Link to="/admin/login" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem' }}>Painel Admin</Link>
+            </div>
+
             <button 
               onClick={() => setIsCartOpen(true)}
               className="btn-outline" 
@@ -183,9 +188,47 @@ const Home: React.FC = () => {
               <ShoppingCart size={20} />
               <span>{cart.length}</span>
             </button>
-            <Link to="/admin/login" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem' }}>Painel Admin</Link>
+
+            <button 
+              className="show-mobile"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              style={{ background: 'transparent', color: 'white' }}
+            >
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Nav Menu */}
+        {isMobileMenuOpen && (
+          <div className="show-mobile animate-fade" style={{ 
+            position: 'absolute', 
+            top: '100%', 
+            left: 0, 
+            width: '100%', 
+            background: 'rgba(37, 99, 235, 0.95)', 
+            backdropFilter: 'blur(10px)',
+            flexDirection: 'column',
+            padding: '20px',
+            gap: '15px',
+            borderTop: '1px solid rgba(255,255,255,0.1)'
+          }}>
+            <button 
+              onClick={() => { toggleTheme(); setIsMobileMenuOpen(false); }}
+              style={{ background: 'rgba(255,255,255,0.1)', color: 'white', padding: '12px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              <span>Mudar Tema</span>
+            </button>
+            <Link 
+              to="/admin/login" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              style={{ color: 'white', padding: '12px', background: 'rgba(255,255,255,0.1)', borderRadius: '12px', textAlign: 'center' }}
+            >
+              Painel Admin
+            </Link>
+          </div>
+        )}
       </header>
 
       <section className="hero">

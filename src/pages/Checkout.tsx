@@ -171,8 +171,8 @@ const Checkout: React.FC = () => {
         </div>
       </header>
 
-      <main className="main-content container animate-fade" style={{ padding: '40px 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 400px', gap: '40px' }}>
+      <main className="main-content container animate-fade" style={{ padding: '40px 16px' }}>
+        <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 400px', gap: '40px' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div className="card">
               <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>

@@ -396,7 +396,55 @@ button {
   .hero { padding: 80px 0 120px 0; }
 }
 
-/* Cart Sidebar UI */
-.app-layout {
-  transition: all 0.3s ease;
+/* Responsive Utils */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+  
+  .show-mobile {
+    display: flex !important;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Grid adaptation */
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Admin Sidebar handle */
+  .admin-layout {
+    flex-direction: column !important;
+  }
+
+  .admin-sidebar {
+    width: 100% !important;
+    height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+  }
+
+  .admin-main {
+    padding: 20px !important;
+    margin-top: 70px;
+  }
+
+  .orders-items-list {
+    border-left: none !important;
+    padding-left: 0 !important;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin-top: 10px;
+  }
+}
+
+.show-mobile {
+  display: none;
 }

@@ -53,14 +53,14 @@ const AdminDashboard: React.FC = () => {
       <div className="animate-fade">
         <h1 style={{ fontSize: '1.875rem', marginBottom: '30px' }}>Dashboard de Vendas</h1>
 
-        <div style={{ display: 'flex', gap: '20px', marginBottom: '40px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '40px' }}>
           <StatCard icon={<Clock size={24} />} label="Em Análise" value={stats.pending} color="#f59e0b" />
           <StatCard icon={<CheckCircle size={24} />} label="Aprovados" value={stats.approved} color="#2563eb" />
           <StatCard icon={<Package size={24} />} label="Entregues" value={stats.delivered} color="#22c55e" />
           <StatCard icon={<XCircle size={24} />} label="Cancelados" value={stats.cancelled} color="#ef4444" />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+        <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
           <div className="card">
             <h2 style={{ fontSize: '1.125rem', marginBottom: '24px' }}>Status dos Pedidos</h2>
             <div style={{ height: '300px' }}>

@@ -143,7 +143,7 @@ const AdminProducts: React.FC = () => {
   return (
     <AdminLayout>
       <div className="animate-fade">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
           <h1 style={{ fontSize: '1.875rem' }}>Gestão de Produtos</h1>
           <button onClick={() => handleOpenModal()} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Plus size={20} /> Novo Produto
@@ -151,53 +151,55 @@ const AdminProducts: React.FC = () => {
         </div>
 
         <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border)' }}>
-              <tr>
-                <th style={{ padding: '16px 20px' }}>Produto</th>
-                <th style={{ padding: '16px 20px' }}>Categoria</th>
-                <th style={{ padding: '16px 20px' }}>Preço</th>
-                <th style={{ padding: '16px 20px' }}>Status</th>
-                <th style={{ padding: '16px 20px' }}>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(product => (
-                <tr key={product.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td style={{ padding: '16px 20px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '4px', backgroundColor: 'var(--bg-main)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {product.image_url ? <img src={product.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={20} color="#cbd5e1" />}
-                      </div>
-                      <div>
-                        <div style={{ fontWeight: '600' }}>{product.name}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{product.id.slice(0, 8)}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{ padding: '16px 20px' }}>
-                    {categories.find(c => c.id === product.category_id)?.name || '-'}
-                  </td>
-                  <td style={{ padding: '16px 20px', fontWeight: '600' }}>
-                    R$ {product.price.toFixed(2)}
-                  </td>
-                  <td style={{ padding: '16px 20px' }}>
-                    {product.available ? (
-                      <span style={{ color: 'var(--success)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.875rem' }}><Check size={16} /> Ativo</span>
-                    ) : (
-                      <span style={{ color: 'var(--danger)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.875rem' }}><X size={16} /> Inativo</span>
-                    )}
-                  </td>
-                  <td style={{ padding: '16px 20px' }}>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <button onClick={() => handleOpenModal(product)} className="btn-outline" style={{ padding: '6px', color: 'var(--primary)' }}><Edit2 size={16} /></button>
-                      <button onClick={() => handleDelete(product.id)} className="btn-outline" style={{ padding: '6px', color: 'var(--danger)' }}><Trash2 size={16} /></button>
-                    </div>
-                  </td>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+              <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border)' }}>
+                <tr>
+                  <th style={{ padding: '16px 20px' }}>Produto</th>
+                  <th style={{ padding: '16px 20px' }}>Categoria</th>
+                  <th style={{ padding: '16px 20px' }}>Preço</th>
+                  <th style={{ padding: '16px 20px' }}>Status</th>
+                  <th style={{ padding: '16px 20px' }}>Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {products.map(product => (
+                  <tr key={product.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                    <td style={{ padding: '16px 20px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ width: '40px', height: '40px', borderRadius: '4px', backgroundColor: 'var(--bg-main)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {product.image_url ? <img src={product.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={20} color="#cbd5e1" />}
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: '600', color: 'var(--text-main)' }}>{product.name}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{product.id.slice(0, 8)}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{ padding: '16px 20px', color: 'var(--text-main)' }}>
+                      {categories.find(c => c.id === product.category_id)?.name || '-'}
+                    </td>
+                    <td style={{ padding: '16px 20px', fontWeight: '600', color: 'var(--text-main)' }}>
+                      R$ {product.price.toFixed(2)}
+                    </td>
+                    <td style={{ padding: '16px 20px' }}>
+                      {product.available ? (
+                        <span style={{ color: 'var(--success)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.875rem' }}><Check size={16} /> Ativo</span>
+                      ) : (
+                        <span style={{ color: 'var(--danger)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.875rem' }}><X size={16} /> Inativo</span>
+                      )}
+                    </td>
+                    <td style={{ padding: '16px 20px' }}>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button onClick={() => handleOpenModal(product)} className="btn-outline" style={{ padding: '6px', color: 'var(--primary)' }}><Edit2 size={16} /></button>
+                        <button onClick={() => handleDelete(product.id)} className="btn-outline" style={{ padding: '6px', color: 'var(--danger)' }}><Trash2 size={16} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </div>

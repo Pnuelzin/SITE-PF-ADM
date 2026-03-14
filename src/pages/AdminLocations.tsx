@@ -127,13 +127,13 @@ const AdminLocations: React.FC = () => {
           </div>
           
           <div style={{ display: 'flex', gap: '12px' }}>
-            <form onSubmit={handleSearch} style={{ display: 'flex', gap: '8px', background: 'white', padding: '4px', borderRadius: '10px', border: '1px solid var(--border)', boxShadow: 'var(--shadow)' }}>
+            <form onSubmit={handleSearch} style={{ display: 'flex', gap: '8px', background: 'var(--bg-card)', padding: '4px', borderRadius: '10px', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', flex: '1 1 auto' }}>
               <input 
                 type="text" 
                 placeholder="Pesquisar endereço..." 
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                style={{ border: 'none', padding: '8px 12px', outline: 'none', width: '250px' }}
+                style={{ border: 'none', padding: '8px 12px', outline: 'none', width: '100%', background: 'transparent', color: 'var(--text-main)' }}
               />
               <button type="submit" className="btn-primary" style={{ padding: '8px' }} disabled={isSearching}>
                 {isSearching ? <Loader2 className="animate-spin" size={18} /> : <Search size={18} />}
@@ -150,10 +150,10 @@ const AdminLocations: React.FC = () => {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 350px', gap: '24px', height: '600px' }}>
-          <div className="card" style={{ padding: '0', overflow: 'hidden', position: 'relative' }}>
+        <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 350px', gap: '24px', minHeight: '600px' }}>
+          <div className="card" style={{ padding: '0', overflow: 'hidden', position: 'relative', minHeight: '400px' }}>
             {isAdding && (
-              <div style={{ position: 'absolute', top: '20px', left: '20px', right: '20px', zIndex: 1000, background: 'rgba(255,255,255,0.95)', padding: '15px', borderRadius: '12px', boxShadow: 'var(--shadow-lg)' }}>
+              <div style={{ position: 'absolute', top: '20px', left: '20px', right: '20px', zIndex: 1000, background: 'var(--bg-card)', padding: '15px', borderRadius: '12px', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--border)' }}>
                 <div style={{ fontWeight: '700', fontSize: '0.875rem', color: 'var(--primary)', marginBottom: '10px' }}>
                   {tempMarker ? "📋 Detalhes da nova área" : "📍 Clique no mapa ou use a busca"}
                 </div>

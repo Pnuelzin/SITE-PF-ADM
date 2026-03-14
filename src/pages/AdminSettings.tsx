@@ -54,18 +54,18 @@ const AdminSettings: React.FC = () => {
   return (
     <AdminLayout>
       <div className="animate-fade">
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h1 style={{ fontSize: '1.875rem' }}>Configurações</h1>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
+          <h1 style={{ fontSize: '1.875rem', color: 'var(--text-main)' }}>Configurações</h1>
           <button onClick={handleSave} disabled={saving} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {saving ? <Loader2 size={20} className="animate-spin" /> : <Save size={20} />} 
             Salvar Alterações
           </button>
         </header>
 
-        <form onSubmit={handleSave} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
+        <form onSubmit={handleSave} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
           {/* Perfil e Funcionamento */}
           <div className="card">
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-main)' }}>
               <Store size={20} color="var(--primary)" /> Perfil e Funcionamento
             </h2>
             <div className="input-group">
@@ -81,7 +81,7 @@ const AdminSettings: React.FC = () => {
                 onChange={e => setFormData({...formData, whatsapp_number: maskPhone(e.target.value)})} 
               />
             </div>
-            <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#f8fafc', padding: '15px', borderRadius: '12px', border: '1px solid var(--border)' }}>
+            <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'var(--bg-main)', padding: '15px', borderRadius: '12px', border: '1px solid var(--border)' }}>
               <input 
                 type="checkbox" 
                 id="is_open" 

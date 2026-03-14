@@ -116,20 +116,20 @@ const AdminOrders: React.FC = () => {
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><CreditCard size={14} /> {translatePayment(order.payment_method)}</span>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '10px' }}>
                   {order.status === 'pending' && (
-                    <button onClick={() => updateStatus(order.id, 'approved')} className="btn-primary" style={{ backgroundColor: 'var(--primary)', padding: '8px 16px', fontSize: '0.875rem' }}>Aprovar</button>
+                    <button onClick={() => updateStatus(order.id, 'approved')} className="btn-primary" style={{ backgroundColor: 'var(--primary)', padding: '8px 16px', fontSize: '0.875rem', flex: '1 1 auto' }}>Aprovar</button>
                   )}
                   {order.status === 'approved' && (
-                    <button onClick={() => updateStatus(order.id, 'delivered')} className="btn-primary" style={{ backgroundColor: 'var(--success)', padding: '8px 16px', fontSize: '0.875rem' }}>Marcar como Entregue</button>
+                    <button onClick={() => updateStatus(order.id, 'delivered')} className="btn-primary" style={{ backgroundColor: 'var(--success)', padding: '8px 16px', fontSize: '0.875rem', flex: '1 1 auto' }}>Entregue</button>
                   )}
                   {(order.status === 'pending' || order.status === 'approved') && (
-                    <button onClick={() => updateStatus(order.id, 'cancelled')} className="btn-outline" style={{ color: 'var(--danger)', padding: '8px 16px', fontSize: '0.875rem', borderColor: 'var(--danger)' }}>Cancelar</button>
+                    <button onClick={() => updateStatus(order.id, 'cancelled')} className="btn-outline" style={{ color: 'var(--danger)', padding: '8px 16px', fontSize: '0.875rem', borderColor: 'var(--danger)', flex: '1 1 auto' }}>Cancelar</button>
                   )}
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+              <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><User size={18} color="var(--text-muted)" /> <strong>{order.customer_name}</strong></div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Phone size={18} color="var(--text-muted)" /> {order.customer_phone}</div>
@@ -154,7 +154,7 @@ const AdminOrders: React.FC = () => {
                   )}
                 </div>
 
-                <div style={{ borderLeft: '1px solid var(--border)', paddingLeft: '40px' }}>
+                <div className="orders-items-list" style={{ borderLeft: '1px solid var(--border)', paddingLeft: '24px' }}>
                   <div style={{ fontWeight: '700', marginBottom: '12px' }}>Itens do Pedido</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {order.items.map(item => (
@@ -184,10 +184,13 @@ const AdminOrders: React.FC = () => {
 
       {/* Modal do Mapa para o Pedido */}
       {selectedMapOrder && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div className="card animate-fade" style={{ width: '100%', maxWidth: '800px', height: '500px', position: 'relative', padding: '0', overflow: 'hidden' }}>
-            <button onClick={() => setSelectedMapOrder(null)} style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 2010, background: 'white', border: 'none', borderRadius: '50%', padding: '5px', boxShadow: 'var(--shadow)', cursor: 'pointer' }}>
-              <X size={20} />
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 4000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px' }}>
+          <div className="card animate-fade" style={{ width: '100%', maxWidth: '900px', height: '90vh', position: 'relative', padding: '0', overflow: 'hidden' }}>
+            <button 
+              onClick={() => setSelectedMapOrder(null)} 
+              style={{ position: 'absolute', top: '15px', right: '15px', zIndex: 4010, background: 'var(--bg-card)', color: 'var(--text-main)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow)', cursor: 'pointer' }}
+            >
+              <X size={24} />
             </button>
             <MapContainer center={[selectedMapOrder.lat!, selectedMapOrder.lng!]} zoom={16} style={{ height: '100%', width: '100%' }}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
