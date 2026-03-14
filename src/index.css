@@ -114,6 +114,51 @@ button {
   transform: translateY(0);
 }
 
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+.scroll-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+  cursor: pointer;
+  color: white;
+  animation: float-y 2s infinite ease-in-out;
+  transition: opacity 0.3s;
+}
+
+.scroll-indicator:hover {
+  opacity: 0.8;
+}
+
+.scroll-indicator-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.scroll-indicator-icon {
+  background: white;
+  color: var(--primary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
 /* App Layout */
 .app-layout {
   display: flex;

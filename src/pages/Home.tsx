@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { Product, Category } from '../types';
 import { useCart } from '../context/CartContext';
-import { ShoppingCart, Search, X } from 'lucide-react';
+import { ShoppingCart, Search, X, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CartSidebar from '../components/CartSidebar';
 
@@ -175,21 +175,21 @@ const Home: React.FC = () => {
               </div>
               <h1>O que vamos pedir hoje?</h1>
               <p>Sua fome atendida com os melhores ingredientes, sabor inigualável e entrega ultra rápida.</p>
-              <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-                <button 
-                  onClick={() => {
-                    const el = document.getElementById('products-grid');
-                    if (el) {
-                      const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
-                      const offsetPosition = elementPosition - 80;
-                      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                    }
-                  }}
-                  className="btn-primary" 
-                  style={{ backgroundColor: 'white', color: 'var(--primary)', padding: '14px 28px', fontSize: '1rem' }}
-                >
-                  Ver Cardápio
-                </button>
+              <div 
+                className="scroll-indicator"
+                onClick={() => {
+                  const el = document.getElementById('products-grid');
+                  if (el) {
+                    const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - 80;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                  }
+                }}
+              >
+                <div className="scroll-indicator-text">Cardápio logo abaixo</div>
+                <div className="scroll-indicator-icon">
+                  <ChevronDown size={20} />
+                </div>
               </div>
             </div>
           </div>
