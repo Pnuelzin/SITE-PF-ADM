@@ -277,7 +277,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        <div className="reveal" style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '10px', marginBottom: '30px' }}>
+        <div className="reveal" style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '10px', marginBottom: '30px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button 
             onClick={() => setSelectedCategory(null)}
             className={!selectedCategory ? 'btn-primary' : 'btn-outline'}

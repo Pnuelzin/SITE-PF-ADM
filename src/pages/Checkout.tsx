@@ -172,7 +172,7 @@ const Checkout: React.FC = () => {
       </header>
 
       <main className="main-content container animate-fade" style={{ padding: '40px 16px' }}>
-        <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 400px', gap: '40px' }}>
+        <div className="checkout-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 400px', gap: '40px' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div className="card">
               <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -332,7 +332,7 @@ const Checkout: React.FC = () => {
           </button>
         </form>
 
-        <div className="card" style={{ height: 'fit-content', position: 'sticky', top: '100px' }}>
+        <div className="card checkout-summary-sticky" style={{ height: 'fit-content', position: 'sticky', top: '100px' }}>
           <h2 style={{ fontSize: '1.25rem', marginBottom: '20px' }}>Resumo do Carrinho</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
             {cart.map((item: CartItem) => (

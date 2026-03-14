@@ -12,6 +12,14 @@
   --warning: #f59e0b;
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  /* Breakpoints de referência (usados em JS ou como doc) */
+  --bp-xs: 480px;
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  /* Navbar height para calcular padding-top do conteúdo */
+  --navbar-height: 72px;
 }
 
 [data-theme='dark'] {
@@ -36,6 +44,8 @@ body {
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.5;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 button {
@@ -82,6 +92,7 @@ button {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  width: 100%;
 }
 
 .theme-toggle {
@@ -146,7 +157,7 @@ button {
 
 @keyframes float-y {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
+  50% { transform: translateY(-8px); }
 }
 
 .scroll-indicator {
@@ -154,7 +165,7 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 40px;
+  margin-top: 16px;
   cursor: pointer;
   color: white;
   animation: float-y 2s infinite ease-in-out;
@@ -198,6 +209,14 @@ button {
 
 .main-content {
   flex: 1;
+  /* Padding-top padrão para compensar o navbar fixo */
+  padding-top: calc(var(--navbar-height) + 20px);
+}
+
+/* Remove o padding-top extra quando dentro de seção hero (que tem z-index/posição própria) */
+.hero + .main-content,
+.hero ~ .main-content {
+  padding-top: 20px;
 }
 
 /* Common Components */
@@ -312,13 +331,10 @@ button {
 }
 
 /* Hero Section */
-/* Hero Section */
 .hero {
   background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
   color: var(--white);
   width: 100% !important;
-  padding: 0;
-  aspect-ratio: 16 / 7;
   min-height: 500px;
   display: flex !important;
   align-items: center;
@@ -326,6 +342,9 @@ button {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  /* Compensa o navbar fixo dentro da hero */
+  padding-top: var(--navbar-height);
+  padding-bottom: 32px;
 }
 
 .hero::before {
@@ -347,10 +366,11 @@ button {
   text-align: center;
   max-width: 800px;
   margin: 0 auto;
+  padding: 32px 16px 0;
 }
 
 .hero-text h1 {
-  font-size: 4rem !important;
+  font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: 1.5rem !important;
@@ -359,7 +379,7 @@ button {
 
 .hero-text p {
   color: rgba(255, 255, 255, 0.9) !important;
-  font-size: 1.5rem !important;
+  font-size: clamp(1rem, 2.5vw, 1.5rem) !important;
   margin: 0 auto 2.5rem !important;
 }
 
@@ -382,16 +402,41 @@ button {
 }
 
 @media (max-width: 968px) {
-  .hero-text h1 { font-size: clamp(2.5rem, 6vw, 3.8rem) !important; }
-  .hero-text p { font-size: clamp(1rem, 2.5vw, 1.5rem) !important; }
   .hero { 
     aspect-ratio: 16 / 8;
-    min-height: 450px;
+    min-height: 420px;
     padding: 30px 0;
+    padding-top: calc(var(--navbar-height) + 10px);
   }
 }
 
-/* Responsive Utils */
+/* =============================================
+   SISTEMA DE RESPONSIVIDADE
+   Breakpoints: xs(480) sm(640) md(768) lg(1024)
+   ============================================= */
+
+/* Utilitários Responsivos */
+.hide-mobile { display: block; }
+.show-mobile { display: none; }
+
+/* --- Tablet pequeno (≤ 1024px) --- */
+@media (max-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Checkout: resumo do carrinho vai para baixo */
+  .checkout-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .checkout-summary-sticky {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+/* --- Mobile (≤ 768px) --- */
 @media (max-width: 768px) {
   .hide-mobile {
     display: none !important;
@@ -405,28 +450,33 @@ button {
     padding: 0 16px;
   }
 
+  /* main-content em mobile remove padding-top extra pois hero já compensa */
+  .main-content {
+    padding-top: 16px;
+  }
+
   .hero-text h1 { 
-    font-size: 2.2rem !important; 
-    margin-bottom: 1rem !important;
+    font-size: clamp(1.6rem, 7vw, 2.2rem) !important; 
+    margin-bottom: 0.8rem !important;
   }
   
   .hero-text p { 
-    font-size: 1.05rem !important; 
-    margin-bottom: 2rem !important;
+    font-size: clamp(0.9rem, 3.5vw, 1.05rem) !important; 
+    margin-bottom: 1.5rem !important;
   }
 
   .hero-badge {
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    margin-bottom: 20px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    margin-bottom: 16px;
   }
 
-  /* Grid adaptation */
+  /* Grid coluna única em mobile */
   .responsive-grid {
     grid-template-columns: 1fr !important;
   }
 
-  /* Admin Sidebar handle */
+  /* Admin Sidebar — coluna no topo */
   .admin-layout {
     flex-direction: column !important;
   }
@@ -440,6 +490,16 @@ button {
     top: 0;
     left: 0;
     z-index: 2000;
+  }
+
+  /* Touch targets mínimos de 44px (conforme mobile-design skill) */
+  button, a, input, select {
+    min-height: 44px;
+  }
+
+  /* Botões menores em grids compactos ficam ok */
+  .btn-icon-sm {
+    min-height: 36px;
   }
 }
 
@@ -527,91 +587,136 @@ button {
   font-weight: 700;
 }
 
-/* --- Responsividade Mobile (Overrides) --- */
+/* --- Responsividade Mobile (Overrides e melhorias) --- */
 @media (max-width: 768px) {
   .hero {
-    width: 100%;
-    margin-left: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    min-height: 360px !important;
     padding: 0 !important;
-    aspect-ratio: 4 / 3;
-    min-height: 420px !important;
-    display: flex !important;
+    padding-top: calc(var(--navbar-height) + 16px) !important;
+    padding-bottom: 24px !important;
+    /* Remove aspect-ratio rígido para permitir conteúdo respirar */
+    aspect-ratio: unset !important;
   }
 
   .hero .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 20px !important;
-  }
-
-  .hero-wave {
-    height: 50px !important;
+    padding: 0 16px !important;
   }
 
   .responsive-main {
-    padding: 60px 16px 40px !important; /* Aumentado para dar espaço à barra de pesquisa */
-    position: relative;
-    z-index: 10; /* Garante que fique acima da onda do hero (z-index 5) */
+    padding: 20px 12px !important;
   }
 
+  /* Grid de produtos: 2 colunas no mobile */
   .product-grid {
-    grid-template-columns: 1fr !important;
-    gap: 24px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 0 !important;
   }
 
   .card-product {
-    border-radius: 24px !important;
+    border-radius: 12px !important;
   }
 
   .product-image-container {
-    height: 240px !important;
+    height: 120px !important;
   }
 
   .card-product .product-title {
-    padding: 16px 20px 8px !important;
-    font-size: 1.25rem !important;
-    height: auto !important;
-    display: block !important;
+    padding: 10px 10px 4px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.2;
+    font-weight: 700;
   }
 
   .card-product .product-description {
-    padding: 0 20px 20px !important;
-    font-size: 0.875rem !important;
-    line-height: 1.6 !important;
-    height: auto !important;
-    display: block !important;
-    -webkit-line-clamp: unset !important;
-    line-clamp: unset !important;
+    padding: 0 10px 8px !important;
+    font-size: 0.7rem !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    display: -webkit-box !important;
+    height: 30px !important;
   }
 
   .price-button-container {
-    padding: 0 20px 24px !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 12px !important;
+    padding: 0 10px 10px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
   }
 
   .price-tag {
-    font-size: 1.35rem !important;
+    font-size: 1rem !important;
+    font-weight: 800;
+  }
+
+  .btn-buy {
+    width: 100% !important;
+    padding: 10px 8px !important;
+    font-size: 0.8rem !important;
+    border-radius: 8px !important;
+    text-align: center;
+    min-height: 44px; /* Touch target mínimo */
+  }
+
+  .reveal[style*="overflow-x: auto"],
+  .reveal[style*="overflowX: auto"] {
+    margin: 0 -12px 20px !important;
+    padding: 0 12px 5px !important;
+  }
+
+  /* Cart Sidebar: tela cheia no mobile */
+  .cart-sidebar-container {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Admin Orders: itens empilhados */
+  .orders-items-list {
+    border-left: none !important;
+    padding-left: 0 !important;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+}
+
+/* --- Extra Small (≤ 480px) --- */
+@media (max-width: 480px) {
+  /* 1 coluna em telas muito pequenas (ex: 360px) */
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .product-image-container {
+    height: 200px !important;
+  }
+
+  .card-product .product-title {
+    font-size: 1rem !important;
+    padding: 14px 14px 6px !important;
+  }
+
+  .card-product .product-description {
+    font-size: 0.8rem !important;
+    height: auto !important;
+    padding: 0 14px 10px !important;
+  }
+
+  .price-button-container {
+    padding: 0 14px 14px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
   .btn-buy {
     width: auto !important;
-    padding: 10px 24px !important;
-    font-size: 0.9rem !important;
-    border-radius: 14px !important;
-  }
-  
-  .show-mobile {
-    display: flex !important;
-  }
-
-  /* Ajuste para filtro de categorias mobile */
-  .reveal[style*="overflow-x: auto"],
-  .reveal[style*="overflowX: auto"] {
-    margin: 0 -16px 30px !important;
-    padding: 0 16px 10px !important;
+    padding: 10px 20px !important;
   }
 }
 
