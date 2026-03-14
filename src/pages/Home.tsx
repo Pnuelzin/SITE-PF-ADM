@@ -15,28 +15,6 @@ const Home: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const { addToCart, cart, isCartOpen, setIsCartOpen } = useCart();
 
-  useEffect(() => {
-    fetchData();
-
-    // Lógica para Animação de Scroll (Reveal)
-    const observerOptions = {
-      threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
-      });
-    }, observerOptions);
-
-    const revealElements = document.querySelectorAll('.reveal');
-    revealElements.forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, [loading]);
-
   const fetchData = async () => {
     try {
       const { data: cats } = await supabase.from('categories').select('*').order('name');
@@ -51,14 +29,43 @@ const Home: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Lógica de Animação que roda sempre que a lista filtrada ou o estado de loading mudar
+  useEffect(() => {
+    if (loading) return;
+
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, observerOptions);
+
+    // Timeout curto para garantir que o React terminou de renderizar os novos elementos do grid
+    const timeoutId = setTimeout(() => {
+      const revealElements = document.querySelectorAll('.reveal');
+      revealElements.forEach(el => observer.observe(el));
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [loading, selectedCategory, searchQuery, products]);
+
   const filteredProducts = products.filter(p => {
     const matchesCategory = selectedCategory ? p.category_id === selectedCategory : true;
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         p.description.toLowerCase().includes(searchQuery.toLowerCase());
+                         (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
-  if (loading) return <div className="loading">Carregando...</div>;
+  if (loading) return <div className="loading" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--primary)' }}>Carregando delícias...</div>;
 
   return (
     <div className={`app-layout ${isCartOpen ? 'cart-open' : ''}`}>
@@ -185,9 +192,6 @@ const Home: React.FC = () => {
                 </button>
               </div>
             </div>
-            <div className="hero-image-container">
-              <img src="/hero_food_premium.png" alt="Hero Food" />
-            </div>
           </div>
         </div>
         <div className="hero-wave"></div>
@@ -232,7 +236,7 @@ const Home: React.FC = () => {
             <div 
               key={product.id} 
               className="card reveal" 
-              style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer', transition: 'transform 0.3s ease' }} 
+              style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }} 
               onClick={() => setSelectedProduct(product)}
             >
               <div style={{ height: '220px', backgroundColor: '#f1f5f9', borderRadius: '16px', marginBottom: '16px', overflow: 'hidden' }}>
@@ -265,6 +269,12 @@ const Home: React.FC = () => {
               </div>
             </div>
           ))}
+          {filteredProducts.length === 0 && (
+            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '100px 0', color: 'var(--text-muted)' }}>
+              <Search size={48} style={{ marginBottom: '16px', opacity: 0.3 }} />
+              <p style={{ fontSize: '1.25rem' }}>Nenhum produto encontrado nesta categoria.</p>
+            </div>
+          )}
         </div>
       </main>
     </div>
