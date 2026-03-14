@@ -79,8 +79,8 @@ const Home: React.FC = () => {
             onClick={e => e.stopPropagation()}
             className="card"
             style={{ 
-              width: '100%', maxWidth: '700px', backgroundColor: 'var(--white)', 
-              borderRadius: '28px', overflow: 'hidden', boxShadow: '0 30px 60px -12px rgba(0,0,0,0.6)',
+              width: '90%', maxWidth: '450px', backgroundColor: 'var(--white)', 
+              borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px -12px rgba(0,0,0,0.6)',
               transform: 'scale(1)', animation: 'popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
               position: 'relative'
             }}
@@ -88,39 +88,37 @@ const Home: React.FC = () => {
             <button 
               onClick={() => setSelectedProduct(null)}
               style={{ 
-                position: 'absolute', top: '20px', right: '20px', zIndex: 10,
-                width: '44px', height: '44px', borderRadius: '50%', border: 'none',
+                position: 'absolute', top: '15px', right: '15px', zIndex: 10,
+                width: '36px', height: '36px', borderRadius: '50%', border: 'none',
                 backgroundColor: 'rgba(255,255,255,0.9)', color: 'black', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.2)', transition: 'transform 0.2s'
+                boxShadow: '0 4px 12px rgba(0,0,0,0.2)', transition: 'transform 0.2s'
               }}
               onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
               onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
             >
-              <X size={24} />
+              <X size={20} />
             </button>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr' }}>
-              <div style={{ height: '400px', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ height: '300px', overflow: 'hidden' }}>
                 <img 
                   src={selectedProduct.image_url || '/placeholder.png'} 
                   alt={selectedProduct.name} 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
-              <div style={{ padding: '40px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                  <h2 style={{ fontSize: '2.25rem', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1.1' }}>
-                    {selectedProduct.name}
-                  </h2>
-                </div>
-                <p style={{ color: 'var(--text-muted)', fontSize: '1.125rem', lineHeight: '1.7', marginBottom: '40px' }}>
+              <div style={{ padding: '24px' }}>
+                <h2 style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '12px', lineHeight: '1.2' }}>
+                  {selectedProduct.name}
+                </h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.6', marginBottom: '24px' }}>
                   {selectedProduct.description}
                 </p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '30px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
                   <div>
-                    <span style={{ display: 'block', fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '600', marginBottom: '4px' }}>PREÇO</span>
-                    <span style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--primary)' }}>
+                    <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600', marginBottom: '2px' }}>PREÇO</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: '900', color: 'var(--primary)' }}>
                       R$ {selectedProduct.price.toFixed(2)}
                     </span>
                   </div>
@@ -131,9 +129,9 @@ const Home: React.FC = () => {
                       setSelectedProduct(null);
                     }}
                     className="btn-primary" 
-                    style={{ padding: '18px 40px', borderRadius: '18px', fontSize: '1.125rem', fontWeight: '700', boxShadow: '0 10px 20px -5px rgba(37,99,235,0.4)' }}
+                    style={{ padding: '12px 24px', borderRadius: '14px', fontSize: '1rem', fontWeight: '700' }}
                   >
-                    Adicionar ao Carrinho
+                    Adicionar
                   </button>
                 </div>
               </div>
