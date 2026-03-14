@@ -261,7 +261,6 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="hero-wave"></div>
       </section>
 
       <main id="products-grid" className="main-content container animate-fade responsive-main">
