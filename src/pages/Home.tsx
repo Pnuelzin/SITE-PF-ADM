@@ -100,7 +100,7 @@ const Home: React.FC = () => {
               <X size={24} />
             </button>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', md: '1fr 1.2fr' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr' }}>
               <div style={{ height: '400px', overflow: 'hidden' }}>
                 <img 
                   src={selectedProduct.image_url || '/placeholder.png'} 
