@@ -13,6 +13,7 @@ const Home: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { addToCart, cart, isCartOpen, setIsCartOpen } = useCart();
 
   const fetchData = async () => {
@@ -57,6 +58,14 @@ const Home: React.FC = () => {
       observer.disconnect();
     };
   }, [loading, selectedCategory, searchQuery, products]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const filteredProducts = products.filter(p => {
     const matchesCategory = selectedCategory ? p.category_id === selectedCategory : true;
@@ -147,7 +156,7 @@ const Home: React.FC = () => {
         </div>
       )}
 
-      <header className="navbar hero-active">
+      <header className={`navbar ${isScrolled ? 'scrolled' : 'hero-active'}`}>
         <div className="container navbar-content">
           <Link to="/" className="logo">
             <img src="/image/Vector.svg" alt="Logo" style={{ height: '40px', width: 'auto' }} />
