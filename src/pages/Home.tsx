@@ -174,7 +174,7 @@ const Home: React.FC = () => {
                 <span style={{ fontSize: '1.2rem' }}>✨</span> Destaque da Semana
               </div>
               <h1>O que vamos pedir hoje?</h1>
-              <p>Sua fome atendida com os melhores ingredientes, sabor inigualável e entrega ultra rápida.</p>
+              <p>Sua fome atendida da melhor forma, sabor inesquecível e entrega rápida!</p>
               <div 
                 className="scroll-indicator"
                 onClick={() => {
