@@ -14,15 +14,18 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
   const { addToCart, cart, isCartOpen, setIsCartOpen } = useCart();
 
   const fetchData = async () => {
     try {
       const { data: cats } = await supabase.from('categories').select('*').order('name');
       const { data: prods } = await supabase.from('products').select('*').eq('available', true).order('name');
+      const { data: sets } = await supabase.from('settings').select('*').eq('id', 'main').single();
       
       if (cats) setCategories(cats);
       if (prods) setProducts(prods);
+      if (sets) setSettings(sets);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -182,8 +185,13 @@ const Home: React.FC = () => {
               <div className="hero-badge">
                 <span style={{ fontSize: '1.2rem' }}>✨</span> Destaque da Semana
               </div>
-              <h1>Qual vai ser o pedido de hoje?</h1>
-              <p>Sua fome atendida da melhor forma, sabor inesquecível e entrega rápida!</p>
+              {!settings?.is_open && (
+                <div style={{ backgroundColor: 'var(--danger)', color: 'white', padding: '10px 20px', borderRadius: '12px', marginBottom: '20px', fontWeight: 'bold', display: 'inline-block', animation: 'pulse 2s infinite' }}>
+                  🚫 LOJA FECHADA NO MOMENTO
+                </div>
+              )}
+              <h1>{settings?.hero_title || 'Qual vai ser o pedido de hoje?'}</h1>
+              <p>{settings?.hero_subtitle || 'Sua fome atendida da melhor forma, sabor inesquecível e entrega rápida!'}</p>
               <div 
                 className="scroll-indicator"
                 onClick={() => {

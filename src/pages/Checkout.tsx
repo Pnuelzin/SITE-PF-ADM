@@ -26,6 +26,7 @@ const Checkout: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
   const [mapPosition, setMapPosition] = useState<[number, number]>([-23.5505, -46.6333]);
+  const [settings, setSettings] = useState<any>(null);
 
 
   const [formData, setFormData] = useState({
@@ -35,6 +36,15 @@ const Checkout: React.FC = () => {
     paymentMethod: 'pix' as 'pix' | 'card' | 'cash',
     changeAmount: ''
   });
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    const { data } = await supabase.from('settings').select('*').eq('id', 'main').single();
+    if (data) setSettings(data);
+  };
 
   // Função para obter endereço do texto a partir de coordenadas
   const updateAddressFromCoords = async (lat: number, lng: number) => {
@@ -86,6 +96,16 @@ const Checkout: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) return;
+
+    if (settings && !settings.is_open) {
+      alert("A loja está fechada no momento. Por favor, tente novamente mais tarde.");
+      return;
+    }
+
+    if (settings && total < settings.min_order_value) {
+      alert(`O valor mínimo para o pedido é R$ ${settings.min_order_value.toFixed(2)}`);
+      return;
+    }
 
     setLoading(true);
     try {
@@ -294,8 +314,21 @@ const Checkout: React.FC = () => {
             )}
           </div>
 
-          <button type="submit" className="btn-primary" style={{ padding: '16px', fontSize: '1.125rem' }} disabled={loading || cart.length === 0}>
-            {loading ? 'Processando...' : `Confirmar Pedido - R$ ${total.toFixed(2)}`}
+          <button 
+            type="submit" 
+            className="btn-primary" 
+            style={{ 
+              padding: '16px', 
+              fontSize: '1.125rem',
+              backgroundColor: (!settings?.is_open || (settings && total < settings.min_order_value)) ? 'var(--text-muted)' : 'var(--primary)',
+              opacity: loading || cart.length === 0 ? 0.7 : 1
+            }} 
+            disabled={loading || cart.length === 0 || !settings?.is_open || (settings && total < settings.min_order_value)}
+          >
+            {loading ? 'Processando...' : 
+             !settings?.is_open ? 'LOJA FECHADA' : 
+             (settings && total < settings.min_order_value) ? `MÍNIMO R$ ${settings.min_order_value.toFixed(2)}` :
+             `Confirmar Pedido - R$ ${total.toFixed(2)}`}
           </button>
         </form>
 

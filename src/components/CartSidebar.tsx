@@ -1,11 +1,24 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
-import { X, Trash2, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { X, Trash2, Minus, Plus, ShoppingBag, AlertTriangle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const CartSidebar: React.FC = () => {
   const { cart, total, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
+  const [settings, setSettings] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (isCartOpen) {
+      fetchSettings();
+    }
+  }, [isCartOpen]);
+
+  const fetchSettings = async () => {
+    const { data } = await supabase.from('settings').select('*').eq('id', 'main').single();
+    if (data) setSettings(data);
+  };
 
   if (!isCartOpen) return null;
 
@@ -113,19 +126,41 @@ const CartSidebar: React.FC = () => {
 
         {cart.length > 0 && (
           <div style={{ padding: '24px', borderTop: '1px solid var(--border)', backgroundColor: '#f8fafc' }}>
+            {settings && settings.min_order_value > total && (
+              <div style={{ backgroundColor: '#fff7ed', border: '1px solid #ffedd5', color: '#c2410c', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.875rem', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <AlertTriangle size={18} />
+                <span>Valor mínimo: R$ {settings.min_order_value.toFixed(2)}</span>
+              </div>
+            )}
+            {!settings?.is_open && (
+              <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid var(--danger)', color: 'var(--danger)', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.875rem', fontWeight: 'bold', textAlign: 'center' }}>
+                LOJA FECHADA NO MOMENTO
+              </div>
+            )}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <span style={{ fontSize: '1.1rem', fontWeight: '600' }}>Subtotal</span>
               <span style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--primary)' }}>R$ {total.toFixed(2)}</span>
             </div>
             <button 
               onClick={() => {
+                if (!settings?.is_open) return;
                 setIsCartOpen(false);
                 navigate('/checkout');
               }}
+              disabled={!settings?.is_open || (settings && total < settings.min_order_value)}
               className="btn-primary" 
-              style={{ width: '100%', padding: '16px', fontSize: '1.125rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
+              style={{ 
+                width: '100%', 
+                padding: '16px', 
+                fontSize: '1.125rem', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: '10px',
+                backgroundColor: (!settings?.is_open || (settings && total < settings.min_order_value)) ? 'var(--text-muted)' : 'var(--primary)'
+              }}
             >
-              Finalizar Pedido
+              {!settings?.is_open ? 'Loja Fechada' : 'Finalizar Pedido'}
             </button>
           </div>
         )}
