@@ -451,29 +451,57 @@ button {
   }
 
   .card-product {
-    padding: 12px !important;
+    padding: 10px !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
   }
 
   .card-product h3 {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 4px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .card-product p {
-    display: none !important; /* Esconde descrição no mobile para economizar espaço */
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.75rem !important;
+    margin-bottom: 12px !important;
+    line-height: 1.3 !important;
   }
 
   .card-product .product-image-container {
-    height: 140px !important;
-    margin-bottom: 10px !important;
+    height: 120px !important;
+    margin-bottom: 8px !important;
+    border-radius: 12px !important;
   }
 
   .card-product .price-tag {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
+    display: block !important;
+    margin-bottom: 8px !important;
   }
 
   .card-product .btn-buy {
-    padding: 8px 12px !important;
-    font-size: 0.8rem !important;
+    width: 100% !important;
+    padding: 8px !important;
+    font-size: 0.85rem !important;
+    margin-top: auto;
+  }
+
+  /* Container de preço e botão empilhados no mobile para caber melhor */
+  .card-product .price-button-container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
   }
 }
 

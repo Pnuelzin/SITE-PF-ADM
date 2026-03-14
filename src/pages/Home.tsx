@@ -319,7 +319,7 @@ const Home: React.FC = () => {
               <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '20px', flex: 1, display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                 {product.description}
               </p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }} onClick={e => e.stopPropagation()}>
+              <div className="price-button-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }} onClick={e => e.stopPropagation()}>
                 <span className="price-tag" style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--primary)' }}>
                   R$ {product.price.toFixed(2)}
                 </span>
