@@ -186,7 +186,7 @@ const AdminLocations: React.FC = () => {
             </h2>
             <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {loading ? <div style={{ textAlign: 'center' }}><Loader2 className="animate-spin" /></div> : areas.length === 0 ? <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Nenhuma área.</p> : areas.map(area => (
-                <div key={area.id} style={{ padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: '#f8fafc', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div key={area.id} style={{ padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-main)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <div style={{ fontWeight: '600' }}>{area.name}</div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--success)' }}>R$ {Number(area.delivery_fee).toFixed(2)}</div>

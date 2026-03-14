@@ -66,10 +66,27 @@ const AdminDashboard: React.FC = () => {
             <div style={{ height: '300px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: 'var(--text-main)', fontSize: 12 }} 
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: 'var(--text-main)', fontSize: 12 }} 
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'var(--bg-card)', 
+                      borderColor: 'var(--border)', 
+                      color: 'var(--text-main)',
+                      borderRadius: '8px'
+                    }} 
+                    itemStyle={{ color: 'var(--text-main)' }}
+                  />
                   <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                     {chartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />

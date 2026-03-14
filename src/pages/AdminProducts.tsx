@@ -152,7 +152,7 @@ const AdminProducts: React.FC = () => {
 
         <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid var(--border)' }}>
+            <thead style={{ backgroundColor: 'var(--bg-main)', borderBottom: '1px solid var(--border)' }}>
               <tr>
                 <th style={{ padding: '16px 20px' }}>Produto</th>
                 <th style={{ padding: '16px 20px' }}>Categoria</th>
@@ -166,7 +166,7 @@ const AdminProducts: React.FC = () => {
                 <tr key={product.id} style={{ borderBottom: '1px solid var(--border)' }}>
                   <td style={{ padding: '16px 20px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '4px', backgroundColor: '#f1f5f9', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '4px', backgroundColor: 'var(--bg-main)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {product.image_url ? <img src={product.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={20} color="#cbd5e1" />}
                       </div>
                       <div>
@@ -239,7 +239,7 @@ const AdminProducts: React.FC = () => {
                     borderRadius: '12px',
                     padding: '30px',
                     textAlign: 'center',
-                    backgroundColor: dragActive ? 'rgba(37, 99, 235, 0.05)' : '#f8fafc',
+                    backgroundColor: dragActive ? 'rgba(37, 99, 235, 0.05)' : 'var(--bg-main)',
                     cursor: 'pointer',
                     position: 'relative',
                     transition: 'all 0.2s ease'

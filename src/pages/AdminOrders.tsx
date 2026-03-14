@@ -146,10 +146,10 @@ const AdminOrders: React.FC = () => {
                     )}
                   </div>
                   {order.payment_method === 'cash' && order.change_needed > 0 && (
-                    <div style={{ padding: '8px', backgroundColor: '#fff7ed', border: '1px solid #ffedd5', borderRadius: '4px', fontSize: '0.875rem', color: '#9a3412' }}>
-                      <strong>Troco para:</strong> R$ {order.change_needed.toFixed(2)}
+                    <div style={{ padding: '12px', backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid var(--warning)', borderRadius: '8px', fontSize: '0.875rem' }}>
+                      <strong style={{ color: 'var(--warning)' }}>Troco para:</strong> R$ {order.change_needed.toFixed(2)}
                       <br />
-                      <strong>Valor do troco:</strong> R$ {(order.change_needed - order.total_price).toFixed(2)}
+                      <strong style={{ color: 'var(--warning)' }}>Valor do troco:</strong> R$ {(order.change_needed - order.total_price).toFixed(2)}
                     </div>
                   )}
                 </div>
