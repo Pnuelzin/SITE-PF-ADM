@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 're
 import { supabase } from '../lib/supabase';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { maskCurrency, currencyToNumber } from '../lib/formatters';
 
 // Corrigir ícone padrão do Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -78,7 +79,7 @@ const AdminLocations: React.FC = () => {
       name: newName,
       lat: tempMarker.lat,
       lng: tempMarker.lng,
-      delivery_fee: parseFloat(newFee) || 0
+      delivery_fee: currencyToNumber(newFee)
     };
 
     const { error } = await supabase.from('delivery_areas').insert([payload]);
@@ -159,7 +160,7 @@ const AdminLocations: React.FC = () => {
                 {tempMarker && (
                   <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                     <input type="text" placeholder="Nome (ex: Centro)" value={newName} onChange={e => setNewName(e.target.value)} style={{ padding: '8px', borderRadius: '6px', border: '1px solid var(--border)', flex: 2 }} />
-                    <input type="number" placeholder="Taxa R$" value={newFee} onChange={e => setNewFee(e.target.value)} style={{ padding: '8px', borderRadius: '6px', border: '1px solid var(--border)', flex: 1 }} />
+                    <input type="text" placeholder="Taxa R$" value={newFee} onChange={e => setNewFee(maskCurrency(e.target.value))} style={{ padding: '8px', borderRadius: '6px', border: '1px solid var(--border)', flex: 1 }} />
                     <button onClick={handleSaveArea} className="btn-primary" style={{ padding: '8px 16px' }}><Save size={16} /> Salvar</button>
                   </div>
                 )}

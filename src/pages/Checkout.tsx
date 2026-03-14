@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-lea
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import type { CartItem } from '../types';
+import { maskPhone, maskCurrency, currencyToNumber } from '../lib/formatters';
 
 // Corrigir ícone do Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -97,7 +98,7 @@ const Checkout: React.FC = () => {
           lat: mapPosition[0],
           lng: mapPosition[1],
           payment_method: formData.paymentMethod,
-          change_needed: formData.paymentMethod === 'cash' ? Number(formData.changeAmount) : 0,
+          change_needed: formData.paymentMethod === 'cash' ? currencyToNumber(formData.changeAmount) : 0,
           total_price: total,
           status: 'pending'
         })
@@ -172,10 +173,10 @@ const Checkout: React.FC = () => {
                 <input 
                   type="tel" 
                   required 
-                value={formData.phone}
-                onChange={e => setFormData({...formData, phone: e.target.value})}
-                placeholder="(00) 00000-0000"
-              />
+                  value={formData.phone}
+                  onChange={e => setFormData({...formData, phone: maskPhone(e.target.value)})}
+                  placeholder="(00) 0 0000-0000"
+                />
             </div>
           </div>
 
@@ -284,10 +285,10 @@ const Checkout: React.FC = () => {
               <div className="input-group animate-fade">
                 <label>Precisa de troco para quanto?</label>
                 <input 
-                  type="number" 
+                  type="text" 
                   value={formData.changeAmount}
-                  onChange={e => setFormData({...formData, changeAmount: e.target.value})}
-                  placeholder="Ex: 100.00"
+                  onChange={e => setFormData({...formData, changeAmount: maskCurrency(e.target.value)})}
+                  placeholder="0,00"
                 />
               </div>
             )}

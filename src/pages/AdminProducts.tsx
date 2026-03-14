@@ -3,6 +3,7 @@ import AdminLayout from '../components/admin/AdminLayout';
 import { supabase } from '../lib/supabase';
 import type { Product, Category } from '../types';
 import { Plus, Edit2, Trash2, Check, X, Image as ImageIcon, Upload, Loader2 } from 'lucide-react';
+import { maskCurrency, currencyToNumber } from '../lib/formatters';
 
 const AdminProducts: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -45,7 +46,7 @@ const AdminProducts: React.FC = () => {
       setFormData({
         name: product.name,
         description: product.description,
-        price: product.price.toString(),
+        price: maskCurrency((product.price * 100).toFixed(0)),
         image_url: product.image_url,
         category_id: product.category_id,
         available: product.available
@@ -68,7 +69,7 @@ const AdminProducts: React.FC = () => {
     e.preventDefault();
     const payload = {
       ...formData,
-      price: parseFloat(formData.price)
+      price: currencyToNumber(formData.price)
     };
 
     if (editingProduct) {
@@ -217,7 +218,7 @@ const AdminProducts: React.FC = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div className="input-group">
                   <label>Preço (R$)</label>
-                  <input type="number" step="0.01" required value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
+                  <input type="text" required value={formData.price} onChange={e => setFormData({...formData, price: maskCurrency(e.target.value)})} placeholder="0,00" />
                 </div>
                 <div className="input-group">
                   <label>Categoria</label>
