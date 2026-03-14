@@ -265,7 +265,7 @@ const Home: React.FC = () => {
       </section>
 
       <main id="products-grid" className="main-content container animate-fade responsive-main">
-        <div className="reveal" style={{ display: 'flex', gap: '20px', marginBottom: '40px' }}>
+        <div style={{ display: 'flex', gap: '20px', marginBottom: '40px' }}>
           <div className="search-bar" style={{ flex: 1, position: 'relative' }}>
             <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={20} />
             <input 
