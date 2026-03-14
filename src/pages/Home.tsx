@@ -167,32 +167,35 @@ const Home: React.FC = () => {
           <Link to="/" className="logo">
             <img src="/image/Vector.svg" alt="Logo" style={{ height: '40px', width: 'auto' }} />
           </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <button 
-                onClick={toggleTheme} 
-                className="theme-toggle"
-                title={theme === 'light' ? 'Ativar Modo Escuro' : 'Ativar Modo Claro'}
-                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', cursor: 'pointer', borderRadius: '12px', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-              </button>
-              <Link to="/admin/login" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem' }}>Painel Admin</Link>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Theme Toggle - Always Visible */}
+            <button 
+              onClick={toggleTheme} 
+              className="theme-toggle"
+              title={theme === 'light' ? 'Ativar Modo Escuro' : 'Ativar Modo Claro'}
+              style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', cursor: 'pointer', borderRadius: '12px', padding: '8px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+            </button>
 
+            {/* Cart Button - Always Visible */}
             <button 
               onClick={() => setIsCartOpen(true)}
               className="btn-outline" 
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', cursor: 'pointer' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', cursor: 'pointer', padding: '8px 12px' }}
             >
               <ShoppingCart size={20} />
               <span>{cart.length}</span>
             </button>
 
+            <div className="hide-mobile">
+              <Link to="/admin/login" style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem', marginLeft: '8px' }}>Painel Admin</Link>
+            </div>
+
             <button 
               className="show-mobile"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              style={{ background: 'transparent', color: 'white' }}
+              style={{ background: 'transparent', color: 'white', padding: '4px' }}
             >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -213,13 +216,7 @@ const Home: React.FC = () => {
             gap: '15px',
             borderTop: '1px solid rgba(255,255,255,0.1)'
           }}>
-            <button 
-              onClick={() => { toggleTheme(); setIsMobileMenuOpen(false); }}
-              style={{ background: 'rgba(255,255,255,0.1)', color: 'white', padding: '12px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}
-            >
-              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-              <span>Mudar Tema</span>
-            </button>
+            <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '5px' }}>Navegação</div>
             <Link 
               to="/admin/login" 
               onClick={() => setIsMobileMenuOpen(false)}
