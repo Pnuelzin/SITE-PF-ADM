@@ -541,7 +541,7 @@ button {
   .hero {
     padding: 100px 0 140px !important;
     min-height: 40vh !important;
-    margin-bottom: -40px !important;
+    margin-bottom: -20px !important; /* Reduzido para não cobrir a pesquisa */
     text-align: center;
   }
 
@@ -556,7 +556,9 @@ button {
   }
 
   .responsive-main {
-    padding: 20px 16px 40px !important;
+    padding: 60px 16px 40px !important; /* Aumentado para dar espaço à barra de pesquisa */
+    position: relative;
+    z-index: 10; /* Garante que fique acima da onda do hero (z-index 5) */
   }
 
   .product-grid {
