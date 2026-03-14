@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AdminLayout from '../components/admin/AdminLayout';
 import { supabase } from '../lib/supabase';
 import { Save, Store, Layout, CreditCard, Loader2 } from 'lucide-react';
-import { maskCurrency, currencyToNumber } from '../lib/formatters';
+import { maskCurrency, maskPhone, currencyToNumber } from '../lib/formatters';
 
 const AdminSettings: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ const AdminSettings: React.FC = () => {
     if (data) {
       setFormData({
         store_name: data.store_name,
-        whatsapp_number: data.whatsapp_number,
+        whatsapp_number: maskPhone(data.whatsapp_number),
         is_open: data.is_open,
         min_order_value: maskCurrency((data.min_order_value * 100).toFixed(0)),
         hero_title: data.hero_title,
@@ -73,8 +73,13 @@ const AdminSettings: React.FC = () => {
               <input type="text" value={formData.store_name} onChange={e => setFormData({...formData, store_name: e.target.value})} />
             </div>
             <div className="input-group">
-              <label>WhatsApp para Pedidos (com DDD)</label>
-              <input type="text" placeholder="5511999999999" value={formData.whatsapp_number} onChange={e => setFormData({...formData, whatsapp_number: e.target.value})} />
+              <label>WhatsApp para Pedidos</label>
+              <input 
+                type="text" 
+                placeholder="(00) 0 0000-0000" 
+                value={formData.whatsapp_number} 
+                onChange={e => setFormData({...formData, whatsapp_number: maskPhone(e.target.value)})} 
+              />
             </div>
             <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#f8fafc', padding: '15px', borderRadius: '12px', border: '1px solid var(--border)' }}>
               <input 
