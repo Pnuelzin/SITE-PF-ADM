@@ -83,7 +83,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
 
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {menuItems.map((item) => (
             <Link
               key={item.path}
@@ -103,16 +103,16 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <span>{item.label}</span>
             </Link>
           ))}
+          
+          <button 
+            onClick={handleLogoutClick}
+            className="btn-outline" 
+            style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--danger)', borderColor: 'transparent', marginTop: '12px' }}
+          >
+            <LogOut size={20} />
+            <span>Sair</span>
+          </button>
         </nav>
-
-        <button 
-          onClick={handleLogoutClick}
-          className="btn-outline" 
-          style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--danger)', borderColor: 'transparent' }}
-        >
-          <LogOut size={20} />
-          <span>Sair</span>
-        </button>
       </aside>
 
       {/* Mobile Header */}
