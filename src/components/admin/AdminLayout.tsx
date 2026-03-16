@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut, Coffee, Moon, Sun, Menu, X as CloseIcon, Eye, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut, Coffee, Moon, Sun, Menu, X as CloseIcon, ArrowLeft } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 import { useAuth } from '../../context/AuthContext';
