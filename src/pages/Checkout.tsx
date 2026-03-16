@@ -115,7 +115,7 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="app-layout">
-      <header className="navbar scrolled" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 'var(--navbar-height)', display: 'flex', alignItems: 'center' }}>
+      <header className="navbar scrolled" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '56px', display: 'flex', alignItems: 'center' }}>
         <div className="container" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
           <Link 
             to="/" 
@@ -142,7 +142,7 @@ const Checkout: React.FC = () => {
         </div>
       </header>
 
-      <main className="main-content container animate-fade" style={{ padding: '40px 16px' }}>
+      <main className="main-content container animate-fade" style={{ padding: '80px 16px 40px' }}>
         <div className="checkout-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 400px', gap: '40px' }}>
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             <div className="card">
