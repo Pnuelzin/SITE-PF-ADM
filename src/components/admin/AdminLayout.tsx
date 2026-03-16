@@ -40,7 +40,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div className="admin-layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg-main)' }}>
+    <div className="admin-layout" style={{ display: 'flex', height: '100vh', backgroundColor: 'var(--bg-main)', overflow: 'hidden' }}>
       {/* Sidebar Desktop & Mobile */}
       <aside 
         className="admin-sidebar"
@@ -52,12 +52,12 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           display: isMobile && !isMobileMenuOpen ? 'none' : 'flex', 
           flexDirection: 'column',
           boxShadow: 'var(--shadow)',
-          position: isMobile ? 'fixed' : 'sticky',
+          position: isMobile ? 'fixed' : 'relative',
           top: 0,
           left: 0,
           bottom: 0,
           zIndex: 3000,
-          height: isMobile ? '100vh' : '100vh',
+          height: '100vh',
           overflowY: 'auto'
         }}
       >
@@ -156,7 +156,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       )}
 
       {/* Main Content */}
-      <main className="admin-main" style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
+      <main className="admin-main" style={{ flex: 1, padding: isMobile ? '80px 20px 40px' : '40px', overflowY: 'auto' }}>
         <div className="container" style={{ maxWidth: '1000px', margin: isMobile ? '0' : '0' }}>
           {children}
         </div>
