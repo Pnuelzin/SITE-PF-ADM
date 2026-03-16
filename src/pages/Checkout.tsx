@@ -19,7 +19,8 @@ const Checkout: React.FC = () => {
     roomName: '',
     roomNumber: '',
     paymentMethod: 'pix' as 'pix' | 'card' | 'cash',
-    changeAmount: ''
+    changeAmount: '',
+    noChange: false
   });
 
   useEffect(() => {
@@ -77,6 +78,17 @@ const Checkout: React.FC = () => {
       const whatsappNumber = '558481032681';
       const itemsText = cart.map((item: CartItem) => `- ${item.quantity}x ${item.name}: R$ ${(item.price * item.quantity).toFixed(2)}`).join('%0A');
       
+      const getPaymentInfo = () => {
+        if (formData.paymentMethod === 'pix') return 'Pix';
+        if (formData.paymentMethod === 'card') return 'Cartão';
+        if (formData.paymentMethod === 'cash') {
+          const change = currencyToNumber(formData.changeAmount);
+          if (formData.noChange || change === 0) return 'Dinheiro (Sem troco)';
+          return `Dinheiro (Troco para R$ ${change.toFixed(2)})`;
+        }
+        return '';
+      };
+
       const message = `*NOVO PEDIDO - SITE AD MAIORAIS*%0A%0A` +
         `*DADOS DO CLIENTE:*%0A` +
         `• *Nome:* ${formData.name}%0A` +
@@ -84,6 +96,7 @@ const Checkout: React.FC = () => {
         `• *Turma:* ${formData.roomName}%0A` +
         `• *Sala:* ${formData.roomNumber}%0A%0A` +
         `*ITENS DO PEDIDO:*%0A${itemsText}%0A%0A` +
+        `*PAGAMENTO:* ${getPaymentInfo()}%0A%0A` +
         `*VALOR TOTAL:* R$ ${total.toFixed(2)}%0A%0A` +
         `_Pedido realizado via site._`;
 
@@ -235,14 +248,26 @@ const Checkout: React.FC = () => {
             </div>
 
             {formData.paymentMethod === 'cash' && (
-              <div className="input-group animate-fade">
-                <label>Precisa de troco para quanto?</label>
-                <input 
-                  type="text" 
-                  value={formData.changeAmount}
-                  onChange={e => setFormData({...formData, changeAmount: maskCurrency(e.target.value)})}
-                  placeholder="0,00"
-                />
+              <div className="animate-fade" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="input-group">
+                  <label>Precisa de troco para quanto?</label>
+                  <input 
+                    type="text" 
+                    disabled={formData.noChange}
+                    value={formData.changeAmount}
+                    onChange={e => setFormData({...formData, changeAmount: maskCurrency(e.target.value)})}
+                    placeholder="0,00"
+                    style={{ opacity: formData.noChange ? 0.5 : 1 }}
+                  />
+                </div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.9rem' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={formData.noChange}
+                    onChange={e => setFormData({...formData, noChange: e.target.checked, changeAmount: e.target.checked ? '' : formData.changeAmount})}
+                  />
+                  Não preciso de troco
+                </label>
               </div>
             )}
           </div>
@@ -256,7 +281,7 @@ const Checkout: React.FC = () => {
               backgroundColor: (!settings?.is_open || (settings && total < settings.min_order_value)) ? 'var(--text-muted)' : 'var(--primary)',
               opacity: loading || cart.length === 0 ? 0.7 : 1
             }} 
-            disabled={loading || cart.length === 0 || !settings?.is_open || (settings && total < settings.min_order_value)}
+            disabled={loading || cart.length === 0 || !settings?.is_open || (settings && total < settings.min_order_value) || (formData.paymentMethod === 'cash' && !formData.noChange && currencyToNumber(formData.changeAmount) === 0)}
           >
             {loading ? 'Processando...' : 
              !settings?.is_open ? 'LOJA FECHADA' : 
