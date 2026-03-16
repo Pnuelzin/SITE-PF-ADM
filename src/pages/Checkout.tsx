@@ -52,7 +52,7 @@ const Checkout: React.FC = () => {
         .insert({
           customer_name: formData.name,
           customer_phone: formData.phone,
-          customer_location: `Sala: ${formData.roomName} | Nº: ${formData.roomNumber}`,
+          customer_location: `Turma: ${formData.roomName} | Sala: ${formData.roomNumber}`,
           payment_method: formData.paymentMethod,
           change_needed: formData.paymentMethod === 'cash' ? currencyToNumber(formData.changeAmount) : 0,
           total_price: total,
@@ -143,17 +143,17 @@ const Checkout: React.FC = () => {
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div className="input-group">
-                <label>Nome da Sala</label>
+                <label>NOME DA TURMA</label>
                 <input 
                   type="text" 
                   required 
                   value={formData.roomName}
                   onChange={e => setFormData({...formData, roomName: e.target.value})}
-                  placeholder="Ex: Biblioteca, Sala de Aula"
+                  placeholder="Ex: 3º Ano A, 9º B"
                 />
               </div>
               <div className="input-group">
-                <label>Número</label>
+                <label>NÚMERO DA SALA</label>
                 <input 
                   type="text" 
                   required 
