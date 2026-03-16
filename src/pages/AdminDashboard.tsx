@@ -28,7 +28,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   const chartData = [
-    { name: 'Pendente', value: stats.pending, color: 'var(--warning)' },
+    { name: 'Em Análise', value: stats.pending, color: 'var(--warning)' },
     { name: 'Aprovado', value: stats.approved, color: 'var(--primary)' },
     { name: 'Entregue', value: stats.delivered, color: 'var(--success)' },
     { name: 'Cancelado', value: stats.cancelled, color: 'var(--danger)' },
