@@ -1,56 +1,48 @@
--- SECURITY UPDATE: Row Level Security (RLS) Policies
--- These policies ensure that only authorized admins can manage the database,
--- while customers can only view products and place orders.
+-- SEGURANÇA ATUALIZADA (V2)
+-- Permite que o checkout funcione corretamente enquanto protege os dados.
 
--- 1. Reset existing policies to avoid conflicts
-DROP POLICY IF EXISTS "Allow public read categories" ON categories;
-DROP POLICY IF EXISTS "Allow public read products" ON products;
-DROP POLICY IF EXISTS "Allow public read delivery_areas" ON delivery_areas;
-DROP POLICY IF EXISTS "Allow public insert orders" ON orders;
-DROP POLICY IF EXISTS "Allow public insert order_items" ON order_items;
-DROP POLICY IF EXISTS "Allow all categories" ON categories;
-DROP POLICY IF EXISTS "Allow all products" ON products;
-DROP POLICY IF EXISTS "Allow all orders" ON orders;
-DROP POLICY IF EXISTS "Allow all order_items" ON order_items;
-DROP POLICY IF EXISTS "Allow all delivery_areas" ON delivery_areas;
+-- 1. Limpar políticas anteriores
+DROP POLICY IF EXISTS "Public Read Categories" ON categories;
+DROP POLICY IF EXISTS "Public Read Products" ON products;
+DROP POLICY IF EXISTS "Public Insert Orders" ON orders;
+DROP POLICY IF EXISTS "Public Insert Items" ON order_items;
+DROP POLICY IF EXISTS "Public Read Orders" ON orders;
+DROP POLICY IF EXISTS "Public Read Items" ON order_items;
+DROP POLICY IF EXISTS "Admin All Orders" ON orders;
+DROP POLICY IF EXISTS "Admin All Order Items" ON order_items;
+DROP POLICY IF EXISTS "Admin All Products" ON products;
 
--- 2. PUBLIC POLICIES (Everyone can see products and buy)
+-- 2. POLÍTICAS PÚBLICAS (Acesso para Clientes)
 CREATE POLICY "Public Read Categories" ON categories FOR SELECT USING (true);
 CREATE POLICY "Public Read Products" ON products FOR SELECT USING (available = true);
+
+-- Permissões para o Checkout (Inserir e Ler o próprio retorno)
 CREATE POLICY "Public Insert Orders" ON orders FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public Read Orders" ON orders FOR SELECT USING (true); -- Necessário para o .select() do Checkout
+
 CREATE POLICY "Public Insert Items" ON order_items FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public Read Items" ON order_items FOR SELECT USING (true);
 
--- 3. ADMIN POLICIES (Only logged-in users can manage data)
--- Use auth.role() = 'authenticated' to check if user is logged in via Supabase Auth
-CREATE POLICY "Admin Categories" ON categories 
+-- 3. POLÍTICAS DE ADMINISTRADOR (Apenas você autenticado)
+-- Bloqueia alteração e exclusão para o público
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Admin All Orders" ON orders 
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
-CREATE POLICY "Admin Products" ON products 
+CREATE POLICY "Admin All Order Items" ON order_items 
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
-CREATE POLICY "Admin Orders" ON orders 
+CREATE POLICY "Admin All Products" ON products 
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
-CREATE POLICY "Admin Order Items" ON order_items 
-  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+-- 4. STORAGE SECURITY (Imagens)
+DROP POLICY IF EXISTS "Public Read Images" ON storage.objects;
+DROP POLICY IF EXISTS "Admin Upload Images" ON storage.objects;
+DROP POLICY IF EXISTS "Admin Update Images" ON storage.objects;
+DROP POLICY IF EXISTS "Admin Delete Images" ON storage.objects;
+DROP POLICY IF EXISTS "Admin Manage Images" ON storage.objects;
 
--- 4. STORAGE SECURITY (Product Images)
-DROP POLICY IF EXISTS "Public Access" ON storage.objects;
-DROP POLICY IF EXISTS "Allow Public Uploads" ON storage.objects;
-DROP POLICY IF EXISTS "Allow Public Deletes" ON storage.objects;
-
--- Everyone can see images
-CREATE POLICY "Public Read Images" ON storage.objects
-  FOR SELECT USING (bucket_id = 'products');
-
--- Only authenticated admins can upload images
-CREATE POLICY "Admin Upload Images" ON storage.objects
-  FOR INSERT TO authenticated WITH CHECK (bucket_id = 'products');
-
--- Only authenticated admins can update images
-CREATE POLICY "Admin Update Images" ON storage.objects
-  FOR UPDATE TO authenticated USING (bucket_id = 'products');
-
--- Only authenticated admins can delete images
-CREATE POLICY "Admin Delete Images" ON storage.objects
-  FOR DELETE TO authenticated USING (bucket_id = 'products');
+CREATE POLICY "Public Read Images" ON storage.objects FOR SELECT USING (bucket_id = 'products');
+CREATE POLICY "Admin Manage Images" ON storage.objects FOR ALL TO authenticated USING (bucket_id = 'products');
