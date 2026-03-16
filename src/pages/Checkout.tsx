@@ -73,8 +73,27 @@ const Checkout: React.FC = () => {
       const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
       if (itemsError) throw itemsError;
 
+      // WhatsApp Message Integration
+      const whatsappNumber = '558481032681';
+      const itemsText = cart.map((item: CartItem) => `- ${item.quantity}x ${item.name}: R$ ${(item.price * item.quantity).toFixed(2)}`).join('%0A');
+      
+      const message = `*NOVO PEDIDO - SITE AD MAIORAIS*%0A%0A` +
+        `*DADOS DO CLIENTE:*%0A` +
+        `• *Nome:* ${formData.name}%0A` +
+        `• *Telefone:* ${formData.phone}%0A` +
+        `• *Turma:* ${formData.roomName}%0A` +
+        `• *Sala:* ${formData.roomNumber}%0A%0A` +
+        `*ITENS DO PEDIDO:*%0A${itemsText}%0A%0A` +
+        `*VALOR TOTAL:* R$ ${total.toFixed(2)}%0A%0A` +
+        `_Pedido realizado via site._`;
+
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+      
       setFinished(true);
       clearCart();
+
+      // Abrir WhatsApp em uma nova aba
+      window.open(whatsappUrl, '_blank');
     } catch (error) {
       console.error('Error placing order:', error);
       alert('Erro ao processar pedido. Tente novamente.');
