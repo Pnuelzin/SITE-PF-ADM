@@ -115,14 +115,30 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="app-layout">
-      <header className="navbar">
-        <div className="container navbar-content">
-          <Link to="/" className="logo">
-            <ArrowLeft size={20} />
-            <span>Voltar</span>
+      <header className="navbar scrolled" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: 'var(--navbar-height)', display: 'flex', alignItems: 'center' }}>
+        <div className="container" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+          <Link 
+            to="/" 
+            className="btn-outline" 
+            style={{ 
+              position: 'absolute', 
+              left: '0', 
+              padding: '6px 12px', 
+              fontSize: '0.85rem', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '4px',
+              borderRadius: '8px',
+              minHeight: 'unset',
+              height: '32px'
+            }}
+          >
+            <ArrowLeft size={16} />
+            <span className="hide-mobile">Voltar</span>
           </Link>
-          <div style={{ fontWeight: '600' }}>Finalizar Pedido</div>
-          <div style={{ width: '40px' }}></div>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: '700', margin: 0, color: 'var(--white)' }}>
+            Finalizar Pedido
+          </h2>
         </div>
       </header>
 
