@@ -52,12 +52,13 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           display: isMobile && !isMobileMenuOpen ? 'none' : 'flex', 
           flexDirection: 'column',
           boxShadow: 'var(--shadow)',
-          position: isMobile ? 'fixed' : 'relative',
+          position: isMobile ? 'fixed' : 'sticky',
           top: 0,
           left: 0,
           bottom: 0,
           zIndex: 3000,
-          height: isMobile ? '100vh' : 'auto'
+          height: isMobile ? '100vh' : '100vh',
+          overflowY: 'auto'
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
@@ -83,7 +84,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
 
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: 'auto' }}>
           {menuItems.map((item) => (
             <Link
               key={item.path}
@@ -107,7 +108,16 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <button 
             onClick={handleLogoutClick}
             className="btn-outline" 
-            style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--danger)', borderColor: 'transparent', marginTop: '12px' }}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '12px', 
+              color: 'var(--danger)', 
+              borderColor: 'transparent', 
+              marginTop: '12px',
+              width: '100%',
+              justifyContent: 'flex-start'
+            }}
           >
             <LogOut size={20} />
             <span>Sair</span>
