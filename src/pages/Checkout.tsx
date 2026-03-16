@@ -270,6 +270,11 @@ const Checkout: React.FC = () => {
                 </label>
               </div>
             )}
+            {formData.paymentMethod === 'cash' && !formData.noChange && currencyToNumber(formData.changeAmount) === 0 && (
+              <p style={{ color: 'var(--danger)', fontSize: '0.875rem', marginTop: '12px', fontWeight: 'bold' }}>
+                * Por favor, informe o valor do troco ou selecione "Não preciso de troco" para continuar.
+              </p>
+            )}
           </div>
 
           <button 
