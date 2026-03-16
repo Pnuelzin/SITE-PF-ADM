@@ -16,7 +16,8 @@ const Checkout: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    location: '',
+    roomName: '',
+    roomNumber: '',
     paymentMethod: 'pix' as 'pix' | 'card' | 'cash',
     changeAmount: ''
   });
@@ -51,7 +52,7 @@ const Checkout: React.FC = () => {
         .insert({
           customer_name: formData.name,
           customer_phone: formData.phone,
-          customer_location: formData.location,
+          customer_location: `Sala: ${formData.roomName} | Nº: ${formData.roomNumber}`,
           payment_method: formData.paymentMethod,
           change_needed: formData.paymentMethod === 'cash' ? currencyToNumber(formData.changeAmount) : 0,
           total_price: total,
@@ -137,18 +138,30 @@ const Checkout: React.FC = () => {
 
           <div className="card">
             <h2 style={{ fontSize: '1.25rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <MapPin size={20} color="var(--primary)" /> Endereço de Entrega
+              <MapPin size={20} color="var(--primary)" /> Localização na Escola
             </h2>
             
-            <div className="input-group">
-              <label>Rua, Número e Bairro</label>
-              <input 
-                type="text" 
-                required 
-                value={formData.location}
-                onChange={e => setFormData({...formData, location: e.target.value})}
-                placeholder="Ex: Rua das Flores, 123 - Bairro Centro"
-              />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="input-group">
+                <label>Nome da Sala</label>
+                <input 
+                  type="text" 
+                  required 
+                  value={formData.roomName}
+                  onChange={e => setFormData({...formData, roomName: e.target.value})}
+                  placeholder="Ex: Biblioteca, Sala de Aula"
+                />
+              </div>
+              <div className="input-group">
+                <label>Número</label>
+                <input 
+                  type="text" 
+                  required 
+                  value={formData.roomNumber}
+                  onChange={e => setFormData({...formData, roomNumber: e.target.value})}
+                  placeholder="Ex: 101, B2"
+                />
+              </div>
             </div>
           </div>
 
