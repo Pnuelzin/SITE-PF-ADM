@@ -7,6 +7,7 @@ import { ShoppingBag, MapPin, Phone, User, Calendar, CreditCard } from 'lucide-r
 const AdminOrders: React.FC = () => {
   const [orders, setOrders] = useState<(Order & { items: OrderItem[] })[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   useEffect(() => {
     fetchOrders();
@@ -60,6 +61,21 @@ const AdminOrders: React.FC = () => {
     fetchOrders();
   };
 
+  const clearHistory = async () => {
+    try {
+      setLoading(true);
+      const { error } = await supabase.from('orders').delete().neq('id', '00000000-0000-0000-0000-000000000000'); // Delete everything
+      if (error) throw error;
+      setOrders([]);
+      setShowClearConfirm(false);
+    } catch (error) {
+      console.error('Error clearing history:', error);
+      alert('Erro ao limpar histórico.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getStatusBadge = (status: OrderStatus) => {
     const styles: Record<OrderStatus, any> = {
       pending: { bg: '#fef3c7', text: '#d97706', label: 'Em Análise' },
@@ -80,12 +96,23 @@ const AdminOrders: React.FC = () => {
     return methods[method] || method;
   };
 
-  if (loading) return <AdminLayout>Carregando...</AdminLayout>;
+  if (loading && orders.length === 0) return <AdminLayout>Carregando...</AdminLayout>;
 
   return (
     <AdminLayout>
       <div className="animate-fade">
-        <h1 style={{ fontSize: '1.875rem', marginBottom: '30px' }}>Pedidos</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+          <h1 style={{ fontSize: '1.875rem', margin: 0 }}>Pedidos</h1>
+          {orders.length > 0 && (
+            <button 
+              onClick={() => setShowClearConfirm(true)}
+              className="btn-outline"
+              style={{ color: 'var(--danger)', borderColor: 'var(--danger)', padding: '8px 16px' }}
+            >
+              Limpar Histórico
+            </button>
+          )}
+        </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {orders.map(order => (
@@ -158,6 +185,42 @@ const AdminOrders: React.FC = () => {
           )}
         </div>
       </div>
+
+      {showClearConfirm && (
+        <div style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          width: '100%', 
+          height: '100%', 
+          backgroundColor: 'rgba(0,0,0,0.5)', 
+          zIndex: 4000, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          backdropFilter: 'blur(4px)'
+        }}>
+          <div className="card animate-scale" style={{ width: '90%', maxWidth: '400px', padding: '32px', textAlign: 'center' }}>
+            <h2 style={{ marginBottom: '16px', fontSize: '1.25rem' }}>Você realmente deseja apagar o histórico dos pedidos?</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <button 
+                onClick={() => setShowClearConfirm(false)} 
+                className="btn-outline"
+                style={{ width: '100%' }}
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={clearHistory} 
+                className="btn-primary"
+                style={{ width: '100%', backgroundColor: 'var(--danger)' }}
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminLayout>
   );
 };
