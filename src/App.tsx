@@ -14,7 +14,16 @@ import Login from './pages/Login';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
   return isAuthenticated ? <>{children}</> : <Navigate to="/admin/login" />;
 };
 
