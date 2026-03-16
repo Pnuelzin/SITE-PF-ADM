@@ -105,8 +105,8 @@ const Checkout: React.FC = () => {
       setFinished(true);
       clearCart();
 
-      // Abrir WhatsApp em uma nova aba
-      window.open(whatsappUrl, '_blank');
+      // Redirecionar para o WhatsApp (mais confiável em dispositivos móveis/iOS)
+      window.location.href = whatsappUrl;
     } catch (error) {
       console.error('Error placing order:', error);
       alert('Erro ao processar pedido. Tente novamente.');
