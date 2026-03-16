@@ -2,26 +2,11 @@ import React, { useEffect, useState } from 'react';
 import AdminLayout from '../components/admin/AdminLayout';
 import { supabase } from '../lib/supabase';
 import type { Order, OrderItem, OrderStatus } from '../types';
-import { ShoppingBag, MapPin, Phone, User, Calendar, CreditCard, X } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-
-// Corrigir ícone do Leaflet
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-L.Marker.prototype.options.icon = DefaultIcon;
+import { ShoppingBag, MapPin, Phone, User, Calendar, CreditCard } from 'lucide-react';
 
 const AdminOrders: React.FC = () => {
   const [orders, setOrders] = useState<(Order & { items: OrderItem[] })[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMapOrder, setSelectedMapOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -136,14 +121,6 @@ const AdminOrders: React.FC = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                     <MapPin size={18} color="var(--text-muted)" /> 
                     <span>{order.customer_location}</span>
-                    {order.lat && order.lng && (
-                      <button 
-                        onClick={() => setSelectedMapOrder(order)}
-                        style={{ marginLeft: '10px', fontSize: '0.75rem', color: 'var(--primary)', background: 'rgba(37,99,235,0.1)', border: 'none', padding: '4px 8px', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer' }}
-                      >
-                        Ver no Mapa
-                      </button>
-                    )}
                   </div>
                   {order.payment_method === 'cash' && order.change_needed > 0 && (
                     <div style={{ padding: '12px', backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid var(--warning)', borderRadius: '8px', fontSize: '0.875rem' }}>
@@ -181,31 +158,9 @@ const AdminOrders: React.FC = () => {
           )}
         </div>
       </div>
-
-      {/* Modal do Mapa para o Pedido */}
-      {selectedMapOrder && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 4000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px' }}>
-          <div className="card animate-fade" style={{ width: '100%', maxWidth: '900px', height: '90vh', position: 'relative', padding: '0', overflow: 'hidden' }}>
-            <button 
-              onClick={() => setSelectedMapOrder(null)} 
-              style={{ position: 'absolute', top: '15px', right: '15px', zIndex: 4010, background: 'var(--bg-card)', color: 'var(--text-main)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow)', cursor: 'pointer' }}
-            >
-              <X size={24} />
-            </button>
-            <MapContainer center={[selectedMapOrder.lat!, selectedMapOrder.lng!]} zoom={16} style={{ height: '100%', width: '100%' }}>
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              <Marker position={[selectedMapOrder.lat!, selectedMapOrder.lng!]}>
-                <Popup>
-                  <strong>{selectedMapOrder.customer_name}</strong><br />
-                  {selectedMapOrder.customer_location}
-                </Popup>
-              </Marker>
-            </MapContainer>
-          </div>
-        </div>
-      )}
     </AdminLayout>
   );
 };
 
 export default AdminOrders;
+

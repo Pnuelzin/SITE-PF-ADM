@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Package, MapPin, Settings, LogOut, Coffee, Moon, Sun, Menu, X as CloseIcon } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut, Coffee, Moon, Sun, Menu, X as CloseIcon } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 import { useAuth } from '../../context/AuthContext';
@@ -26,7 +26,6 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
     { path: '/admin/orders', icon: <ShoppingBag size={20} />, label: 'Pedidos' },
     { path: '/admin/products', icon: <Package size={20} />, label: 'Produtos' },
-    { path: '/admin/locations', icon: <MapPin size={20} />, label: 'Localizações' },
     { path: '/admin/settings', icon: <Settings size={20} />, label: 'Configurações' },
   ];
 

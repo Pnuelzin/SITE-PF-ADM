@@ -6,7 +6,6 @@ import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProducts from './pages/AdminProducts';
 import AdminOrders from './pages/AdminOrders';
-import AdminLocations from './pages/AdminLocations';
 import AdminSettings from './pages/AdminSettings';
 import Checkout from './pages/Checkout';
 
@@ -37,7 +36,6 @@ const App: React.FC = () => {
               <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
               <Route path="/admin/products" element={<ProtectedRoute><AdminProducts /></ProtectedRoute>} />
               <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
-              <Route path="/admin/locations" element={<ProtectedRoute><AdminLocations /></ProtectedRoute>} />
               <Route path="/admin/settings" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
             </Routes>
           </Router>

@@ -2,32 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { supabase } from '../lib/supabase';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, CreditCard, DollarSign, Smartphone, User, CheckCircle, MapPin, Target } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import { ArrowLeft, CreditCard, DollarSign, Smartphone, User, CheckCircle, MapPin } from 'lucide-react';
 import type { CartItem } from '../types';
 import { maskPhone, maskCurrency, currencyToNumber } from '../lib/formatters';
-
-// Corrigir ícone do Leaflet
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-L.Marker.prototype.options.icon = DefaultIcon;
 
 const Checkout: React.FC = () => {
   const { cart, total, clearCart } = useCart();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
-  const [mapPosition, setMapPosition] = useState<[number, number]>([-23.5505, -46.6333]);
   const [settings, setSettings] = useState<any>(null);
-
 
   const [formData, setFormData] = useState({
     name: '',
@@ -44,53 +28,6 @@ const Checkout: React.FC = () => {
   const fetchSettings = async () => {
     const { data } = await supabase.from('settings').select('*').eq('id', 'main').single();
     if (data) setSettings(data);
-  };
-
-  // Função para obter endereço do texto a partir de coordenadas
-  const updateAddressFromCoords = async (lat: number, lng: number) => {
-    try {
-      const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-      const data = await resp.json();
-      if (data.display_name) {
-        setFormData(prev => ({ ...prev, location: data.display_name }));
-      }
-    } catch (e) {
-      console.error("Erro na geocodificação reversa", e);
-    }
-  };
-
-  // Componente para lidar com cliques no mapa
-  const MapEvents = () => {
-    useMapEvents({
-      click(e) {
-        setMapPosition([e.latlng.lat, e.latlng.lng]);
-
-        updateAddressFromCoords(e.latlng.lat, e.latlng.lng);
-      },
-    });
-    return null;
-  };
-
-  // Componente para centralizar o mapa na posição atual
-  const ChangeView = ({ center }: { center: [number, number] }) => {
-    const map = useMap();
-    useEffect(() => {
-      map.setView(center, map.getZoom());
-    }, [center]);
-    return null;
-  };
-
-  const handleGetCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setMapPosition([latitude, longitude]);
-
-        updateAddressFromCoords(latitude, longitude);
-      });
-    } else {
-      alert("Geolocalização não suportada pelo seu navegador.");
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -115,8 +52,6 @@ const Checkout: React.FC = () => {
           customer_name: formData.name,
           customer_phone: formData.phone,
           customer_location: formData.location,
-          lat: mapPosition[0],
-          lng: mapPosition[1],
           payment_method: formData.paymentMethod,
           change_needed: formData.paymentMethod === 'cash' ? currencyToNumber(formData.changeAmount) : 0,
           total_price: total,
@@ -215,56 +150,6 @@ const Checkout: React.FC = () => {
                 placeholder="Ex: Rua das Flores, 123 - Bairro Centro"
               />
             </div>
-
-            <button 
-              type="button"
-              onClick={() => {
-                const mapEl = document.getElementById('map-container');
-                mapEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }}
-              className="btn-outline"
-              style={{ 
-                width: '100%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                gap: '8px', 
-                padding: '12px',
-                borderStyle: 'dashed',
-                color: 'var(--primary)',
-                borderColor: 'var(--primary)',
-                backgroundColor: 'rgba(37,99,235,0.05)',
-                marginBottom: '10px'
-              }}
-            >
-              <MapPin size={20} />
-              <span style={{ fontWeight: '700' }}>Marcar Localização exata no Mapa</span>
-            </button>
-
-            <div style={{ marginBottom: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <span style={{ fontSize: '0.875rem', fontWeight: '500', color: 'var(--text-muted)' }}>Confirme no mapa abaixo:</span>
-                <button 
-                  type="button" 
-                  onClick={handleGetCurrentLocation}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: 'var(--primary)', background: 'none', fontWeight: 'bold' }}
-                >
-                  <Target size={14} /> Usar GPS
-                </button>
-              </div>
-              
-              <div id="map-container" style={{ height: '300px', borderRadius: '12px', overflow: 'hidden', border: '2px solid var(--primary)' }}>
-                <MapContainer center={mapPosition} zoom={13} style={{ height: '100%', width: '100%' }}>
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <ChangeView center={mapPosition} />
-                  <MapEvents />
-                  <Marker position={mapPosition} />
-                </MapContainer>
-              </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '8px' }}>
-                * Clique no mapa para confirmar o ponto exato da entrega.
-              </p>
-            </div>
           </div>
 
           <div className="card">
@@ -358,3 +243,4 @@ const Checkout: React.FC = () => {
 };
 
 export default Checkout;
+
