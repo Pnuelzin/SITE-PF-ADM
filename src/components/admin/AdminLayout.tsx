@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut, Coffee, Moon, Sun, Menu, X as CloseIcon } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, Settings, LogOut, Coffee, Moon, Sun, Menu, X as CloseIcon, Eye } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 
 import { useAuth } from '../../context/AuthContext';
@@ -146,12 +146,28 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="logo" style={{ fontSize: '1.2rem' }}>
             <Coffee size={20} /> <span>Admin</span>
           </div>
-          <button 
-            onClick={() => setIsMobileMenuOpen(true)}
-            style={{ background: 'transparent', color: 'var(--text-main)', padding: '5px' }}
-          >
-            <Menu size={28} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Link 
+              to="/" 
+              style={{ 
+                color: 'var(--text-main)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                padding: '5px',
+                opacity: 0.8
+              }}
+              title="Ver Loja"
+            >
+              <Eye size={24} />
+            </Link>
+            <button 
+              onClick={() => setIsMobileMenuOpen(true)}
+              style={{ background: 'transparent', color: 'var(--text-main)', padding: '5px' }}
+            >
+              <Menu size={28} />
+            </button>
+          </div>
         </header>
       )}
 
