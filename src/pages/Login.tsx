@@ -4,9 +4,10 @@ import { useAuth } from '../context/AuthContext';
 import { Lock, User, LogIn, AlertCircle } from 'lucide-react';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -16,14 +17,22 @@ const Login: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
     
-    if (login(username, password)) {
-      navigate('/admin');
-    } else {
-      setError('Credenciais inválidas. Verifique o nome e a senha.');
+    try {
+      const { error: loginError } = await login(email, password);
+      if (loginError) {
+        setError('Credenciais inválidas. Verifique o e-mail e a senha.');
+      } else {
+        navigate('/admin');
+      }
+    } catch (err) {
+      setError('Ocorreu um erro ao tentar entrar. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,13 +91,13 @@ const Login: React.FC = () => {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div className="input-group">
             <label style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <User size={16} /> Usuário
+              <User size={16} /> E-mail
             </label>
             <input 
-              type="text" 
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Digite seu nome"
+              type="email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="seu@email.com"
               required
               style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)' }}
             />
@@ -111,6 +120,7 @@ const Login: React.FC = () => {
           <button 
             type="submit" 
             className="btn-primary" 
+            disabled={loading}
             style={{ 
               width: '100%', 
               padding: '14px', 
@@ -119,10 +129,15 @@ const Login: React.FC = () => {
               alignItems: 'center', 
               justifyContent: 'center', 
               gap: '8px',
-              marginTop: '10px'
+              marginTop: '10px',
+              opacity: loading ? 0.7 : 1
             }}
           >
-            <LogIn size={20} /> Entrar no Painel
+            {loading ? 'Entrando...' : (
+              <>
+                <LogIn size={20} /> Entrar no Painel
+              </>
+            )}
           </button>
         </form>
 
