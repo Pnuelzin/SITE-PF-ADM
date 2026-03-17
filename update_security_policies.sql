@@ -37,6 +37,9 @@ CREATE POLICY "Admin All Order Items" ON order_items
 CREATE POLICY "Admin All Products" ON products 
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
+CREATE POLICY "Admin All Categories" ON categories
+  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
 -- 4. STORAGE SECURITY (Imagens)
 DROP POLICY IF EXISTS "Public Read Images" ON storage.objects;
 DROP POLICY IF EXISTS "Admin Upload Images" ON storage.objects;
