@@ -68,7 +68,7 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div style={{ display: 'flex', gap: '10px' }}>
             <button 
               onClick={toggleTheme} 
-              className="theme-toggle"
+              className="theme-toggle btn-no-min"
               style={{ width: '36px', height: '36px' }}
             >
               {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}

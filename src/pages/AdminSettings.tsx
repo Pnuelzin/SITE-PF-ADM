@@ -147,7 +147,7 @@ const AdminSettings: React.FC = () => {
                   gap: '10px'
                 }}>
                   {editingCategory?.id === cat.id ? (
-                    <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                    <div style={{ display: 'flex', gap: '8px', width: '100%', alignItems: 'center' }}>
                       <input 
                         autoFocus
                         type="text" 
@@ -156,15 +156,41 @@ const AdminSettings: React.FC = () => {
                         onKeyDown={e => e.key === 'Enter' && handleUpdateCategory(cat.id, editingCategory.name)}
                         style={{ flex: 1, padding: '4px 8px', fontSize: '0.9rem' }}
                       />
-                      <button onClick={() => handleUpdateCategory(cat.id, editingCategory.name)} style={{ color: 'var(--success)', background: 'transparent' }}><Check size={18} /></button>
-                      <button onClick={() => setEditingCategory(null)} style={{ color: 'var(--danger)', background: 'transparent' }}><X size={18} /></button>
+                      <button 
+                        onClick={() => handleUpdateCategory(cat.id, editingCategory.name)} 
+                        className="btn-no-min"
+                        style={{ color: 'var(--success)', background: 'transparent', padding: '4px', display: 'flex' }}
+                      >
+                        <Check size={18} />
+                      </button>
+                      <button 
+                        onClick={() => setEditingCategory(null)} 
+                        className="btn-no-min"
+                        style={{ color: 'var(--danger)', background: 'transparent', padding: '4px', display: 'flex' }}
+                      >
+                        <X size={18} />
+                      </button>
                     </div>
                   ) : (
                     <>
                       <span style={{ fontWeight: '500', color: 'var(--text-main)' }}>{cat.name}</span>
                       <div style={{ display: 'flex', gap: '4px' }}>
-                        <button onClick={() => setEditingCategory({ id: cat.id, name: cat.name })} style={{ color: 'var(--primary)', background: 'transparent', padding: '4px' }} title="Editar"><Edit2 size={16} /></button>
-                        <button onClick={() => handleDeleteCategory(cat.id)} style={{ color: 'var(--danger)', background: 'transparent', padding: '4px' }} title="Excluir"><Trash2 size={16} /></button>
+                        <button 
+                          onClick={() => setEditingCategory({ id: cat.id, name: cat.name })} 
+                          className="btn-no-min"
+                          style={{ color: 'var(--primary)', background: 'transparent', padding: '6px', display: 'flex' }} 
+                          title="Editar"
+                        >
+                          <Edit2 size={16} />
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteCategory(cat.id)} 
+                          className="btn-no-min"
+                          style={{ color: 'var(--danger)', background: 'transparent', padding: '6px', display: 'flex' }} 
+                          title="Excluir"
+                        >
+                          <Trash2 size={16} />
+                        </button>
                       </div>
                     </>
                   )}

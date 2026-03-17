@@ -61,7 +61,8 @@ const CartSidebar: React.FC = () => {
           </h2>
           <button 
             onClick={() => setIsCartOpen(false)}
-            style={{ padding: '8px', borderRadius: '50%', backgroundColor: 'var(--bg-main)', color: 'var(--text-muted)' }}
+            className="btn-no-min"
+            style={{ padding: '8px', borderRadius: '50%', backgroundColor: 'var(--bg-main)', color: 'var(--text-muted)', display: 'flex' }}
           >
             <X size={20} />
           </button>
@@ -95,24 +96,27 @@ const CartSidebar: React.FC = () => {
                     <div style={{ fontWeight: '600', fontSize: '1rem', marginBottom: '4px' }}>{item.name}</div>
                     <div style={{ color: 'var(--primary)', fontWeight: '700', marginBottom: '8px' }}>R$ {(item.price * item.quantity).toFixed(2)}</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--bg-main)', borderRadius: '20px', padding: '4px 8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--bg-main)', borderRadius: '20px', padding: '2px 4px', border: '1px solid var(--border)' }}>
                         <button 
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          style={{ padding: '4px', display: 'flex' }}
+                          className="btn-no-min"
+                          style={{ padding: '6px', display: 'flex', color: 'var(--text-main)', background: 'transparent' }}
                         >
                           <Minus size={16} />
                         </button>
-                        <span style={{ minWidth: '30px', textAlign: 'center', fontWeight: '700' }}>{item.quantity}</span>
+                        <span style={{ minWidth: '24px', textAlign: 'center', fontWeight: '700', fontSize: '0.9rem' }}>{item.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          style={{ padding: '4px', display: 'flex' }}
+                          className="btn-no-min"
+                          style={{ padding: '6px', display: 'flex', color: 'var(--text-main)', background: 'transparent' }}
                         >
                           <Plus size={16} />
                         </button>
                       </div>
                       <button 
                         onClick={() => removeFromCart(item.id)}
-                        style={{ color: 'var(--danger)', padding: '8px' }}
+                        className="btn-no-min"
+                        style={{ color: 'var(--danger)', padding: '8px', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                       >
                         <Trash2 size={18} />
                       </button>

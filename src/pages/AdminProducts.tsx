@@ -191,8 +191,20 @@ const AdminProducts: React.FC = () => {
                     </td>
                     <td style={{ padding: '16px 20px' }}>
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        <button onClick={() => handleOpenModal(product)} className="btn-outline" style={{ padding: '6px', color: 'var(--primary)' }}><Edit2 size={16} /></button>
-                        <button onClick={() => handleDelete(product.id)} className="btn-outline" style={{ padding: '6px', color: 'var(--danger)' }}><Trash2 size={16} /></button>
+                        <button 
+                          onClick={() => handleOpenModal(product)} 
+                          className="btn-outline btn-no-min" 
+                          style={{ padding: '6px', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          <Edit2 size={16} />
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(product.id)} 
+                          className="btn-outline btn-no-min" 
+                          style={{ padding: '6px', color: 'var(--danger)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          <Trash2 size={16} />
+                        </button>
                       </div>
                     </td>
                   </tr>

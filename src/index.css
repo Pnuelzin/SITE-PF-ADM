@@ -486,13 +486,16 @@ button {
   }
 
   /* Touch targets mínimos de 44px (conforme mobile-design skill) */
-  button, a, input, select {
+  button:not(.btn-icon-sm):not(.btn-no-min), 
+  a:not(.btn-icon-sm):not(.btn-no-min), 
+  input, 
+  select {
     min-height: 44px;
   }
 
   /* Botões menores em grids compactos ficam ok */
-  .btn-icon-sm {
-    min-height: 36px;
+  .btn-icon-sm, .btn-no-min {
+    min-height: unset !important;
   }
 }
 
